@@ -798,7 +798,9 @@
                     syncCalled = true;
                     suggestions = (suggestions || []).slice(0, that.limit);
                     rendered = suggestions.length;
-                    that._overwrite(query, suggestions);
+                    if (suggestions.length) {
+                        that._overwrite(query, suggestions);
+                    }
                     if (rendered < that.limit && that.async) {
                         that.trigger("asyncRequested", query);
                     }
@@ -807,7 +809,11 @@
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
                         that.cancel = $.noop;
-                        that._append(query, suggestions.slice(0, that.limit - rendered));
+                        if (rendered === 0) {
+                            that._overwrite(query, suggestions.slice(0, that.limit - rendered));
+                        } else {
+                            that._append(query, suggestions.slice(0, that.limit - rendered));
+                        }
                         rendered += suggestions.length;
                         that.async && that.trigger("asyncReceived", query);
                     }
