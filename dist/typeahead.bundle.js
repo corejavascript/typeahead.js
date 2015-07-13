@@ -1791,6 +1791,7 @@
             this.$node = $(o.node);
             this.query = null;
             this.datasets = _.map(o.datasets, initializeDataset);
+            this.datasetsSelectOrder = o.datasetsSelectOrder;
             function initializeDataset(oDataset) {
                 var node = that.$node.find(oDataset.node).first();
                 oDataset.node = node.length ? node : $("<div>").appendTo(that.$node);
@@ -1819,6 +1820,14 @@
                 }
             },
             _getSelectables: function getSelectables() {
+                if (this.datasetsSelectOrder !== undefined && this.datasetsSelectOrder !== null && Array.isArray && Array.isArray(this.datasetsSelectOrder)) {
+                    var result = [];
+                    for (var i = 0; i < this.datasetsSelectOrder.length; i += 1) {
+                        var selectableSet = this.$node.find(this.selectors.dataset + "-" + this.datasetsSelectOrder[i] + " " + this.selectors.selectable).toArray();
+                        result = result.concat(selectableSet);
+                    }
+                    return $(result);
+                }
                 return this.$node.find(this.selectors.selectable);
             },
             _removeCursor: function _removeCursor() {
@@ -2284,7 +2293,8 @@
                     }, www);
                     menu = new MenuConstructor({
                         node: $menu,
-                        datasets: datasets
+                        datasets: datasets,
+                        datasetsSelectOrder: o.datasetsSelectOrder
                     }, www);
                     typeahead = new Typeahead({
                         input: input,
