@@ -1,6 +1,6 @@
 language: node_js
-env: 
-  matrix: 
+env:
+  matrix:
   - TEST_SUITE=unit
   - TEST_SUITE=integration BROWSER='firefox'
   - TEST_SUITE=integration BROWSER='firefox:3.5'
@@ -13,10 +13,10 @@ env:
   - TEST_SUITE=integration BROWSER='internet explorer:10'
   - TEST_SUITE=integration BROWSER='internet explorer:11'
   - TEST_SUITE=integration BROWSER='chrome'
-  global: 
-  - secure: VY4J2ERfrMEin++f4+UDDtTMWLuE3jaYAVchRxfO2c6PQUYgR+SW4SMekz855U/BuptMtiVMR2UUoNGMgOSKIFkIXpPfHhx47G5a541v0WNjXfQ2qzivXAWaXNK3l3C58z4dKxgPWsFY9JtMVCddJd2vQieAILto8D8G09p7bpo=
-  - secure: kehbNCoYUG2gLnhmCH/oKhlJG6LoxgcOPMCtY7KOI4ropG8qlypb+O2b/19+BWeO3aIuMB0JajNh3p2NL0UKgLmUK7EYBA9fQz+vesFReRk0V/KqMTSxHJuseM4aLOWA2Wr9US843VGltfODVvDN5sNrfY7RcoRx2cTK/k1CXa8=
-node_js: 
+  global:
+  - secure: TxpQeJw440EGx9iuATa3eU4OrYzJgCEdBNCqitrFLR/Tg/5dqbbmLbHzRYkWQoxncLmOaPZbaHudGLO0zcWvHi5aAhDZZ4wcjC/BYGzL3z+/lV4sCc+hRem4V8RofCK+Jdij/0T6e1LFWjetXgPDwX+tejwpiakbUR9IbH04v3pRe/Uh0WCGG5HebA/2VrR4Te024yJFL3fuAFs+TXwdJmiDgiEdvdQtoZRbTz6hzf+t/PkkfbipMCCMuaJa15FuATsX9pIlpDlcRg8KPa6BaAM+mqB340/y0xF+1JDZJZ5JwBsNyY69vd60M5P5QvfpSr8DcbRdQxXtj+fdbRFXr1vEvb/t+Hsy+PEDF5XJxabmEs27ArfXof//ESBSZ54IU7k9jH22SagU/NAZV8y7k/W8a9SPTq7DbGDGNLwYQQ15ty5YpfBUFaaWjXXDARotepL45tj6KT32DqK+zYd8OKPCHfY+vqyU083GrLySs+6zCAHMWiCCidPn6ZqCPR9vimKD/h2tfgIeMA9+QyrvWOOuJ7JANU+G+NwI3j9rnpb1VwbuV4ncMR2o/vp7vGfrxslLoYjB62m9dVhFQAy+rCX6TAB9Ito4z0Vyrstfo3wcISZwiG1uG3wQc8TxzynqpIsAbH8z7K1Bkh4Ssb5akH0M6OTCpFhRT+l7svsDsEM=
+  - secure: tTGSS1wmJspD9bDkGx12Dd1AM7UqDXmnSgnRIIB02aO7+LWK4dcSGUlFqEZbDTNBGIiwtRAyzmBMyloipRMG/EkCvNd/SseRorxj6sRviAzZbH4DYhNsIGsMVHj6BYjUTM27ciSJmQK2Jth217QXICsD+DNyDMGa6bVcmVJh/1/GXDgCB2mVHtUCmqpl+Y6agR3AoVc5z1Ipvz2lh+VOS6qBld65+Fws+Mk1H58qywcgFFuuw8zsT01qwWmEcd28FjQWjhWbN2fEqcsUdkC9jESAMPt0dpvKjwnSnMhMxN+1Se8QtEl/9vkXYbSYPi+FKyDZt/KUeoVDjDQMb1MI0U+NXCn7gjF3lN1lAF0yM6C7l5KiSj+e5SHmMOYjXzJye1nXTt5sC0EW/6R4dDKtf2hQr2i+upX7bAiYbiEN3WFk34/Xz8lCrbWO/WuKRzzQwB+YXk+9tsxvcyCLYlYKNrX88Hvco5koApdkw3KbZwWMx87FIYLg+CQWBYCBlHlT5V/iK4gccYQ9KWa1WDYGRJr0cTo9PWHPGps6nSiWl266kGF7WV4UaWtjEQt5jLytorGQVDiU/q7zj6YQhjFR0w2i6V/F/zoQ6tR6L8hE98WR7MNZ2NCcW2rz/w+EI/HF+PyJvZTzoF+F04C9FdkYDemGOk6PHDkUWCFGBO8vF1Y=
+node_js:
 - 0.11.13
 before_install:
 - npm install -g grunt-cli@0.1.13
