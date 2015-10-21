@@ -7,6 +7,8 @@
 [typeahead.js][gh-page]
 =======================
 
+[![Join the chat at https://gitter.im/corejavascript/typeahead.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/corejavascript/typeahead.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Inspired by [twitter.com]'s autocomplete search functionality, typeahead.js is
 a flexible JavaScript library that provides a strong foundation for building
 robust typeaheads.
