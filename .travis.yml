@@ -19,6 +19,10 @@ env:
   - TEST_SUITE=integration BROWSER='chrome'
 node_js:
 - 0.11.13
+cache:
+  directories:
+    - node_modules
+    - bower_components
 before_install:
 - npm install -g grunt-cli@0.1.13
 - npm install -g bower@1.3.8
