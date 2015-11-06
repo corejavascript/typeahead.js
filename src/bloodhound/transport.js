@@ -47,7 +47,9 @@ var Transport = (function() {
 
     _fingerprint: function fingerprint(o) {
       o = o || {};
-      return o.url + o.type + $.param(o.data || {});
+      //$.param(o.data || {}) crashes because it does not expect a single string value.
+      //if o.data is string no need to call param
+      return o.url + o.type + _.isString(o.data) ? o.data : $.param(o.data || {});
     },
 
     _get: function(o, cb) {
