@@ -136,7 +136,7 @@ contain at least `sufficient` number of datums, `remote` data will be requested
 and then passed to the `async` callback.
 
 ```javascript
-bloodhound.search(myQuery, sync, async);
+bloodhound.get(myQuery, sync, async);
 
 function sync(datums) {
   console.log('datums from `local`, `prefetch`, and `#add`');
@@ -278,6 +278,10 @@ When configuring `remote`, the following options are available.
 * `transform` – A function with the signature `transform(response)` that allows
    you to transform the remote response before the Bloodhound instance operates 
    on it. Defaults to the [identity function].
+
+* `indexResponse` – Adds the remote response to the index (combined with local 
+  and prefetched data). Then returns filtered results based on the query. Defaults 
+  to `false`.
 
 <!-- section links -->
 
