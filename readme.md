@@ -6,7 +6,11 @@
 
 # [corejs-typeahead](https://typeahead.js.org/)
 
-This is a maintained fork of [twitter.com](https://twitter.com)'s autocomplete search library, [typeahead.js](https://github.com/twitter/typeahead.js).
+This is a maintained fork of (corejavascript/typeahead.js)'s autocomplete search library, [typeahead.js](https://github.com/corejavascript/typeahead.js).
+(This updated to work under special senario)
+
+[corejavascript/typeahead.js]
+	This is a maintained fork of [twitter.com](https://twitter.com)'s autocomplete search library, [typeahead.js](https://github.com/twitter/typeahead.js).
 
 The typeahead.js library consists of 2 components: the suggestion engine,
 [Bloodhound](https://github.com/corejavascript/typeahead.js/blob/master/doc/bloodhound.md), and the UI view, [Typeahead](https://github.com/corejavascript/typeahead.js/blob/master/doc/jquery_typeahead.md).
@@ -26,10 +30,12 @@ How you acquire typeahead.js is up to you:
 * [Download zipball of latest release](https://github.com/corejavascript/typeahead.js/archive/master.zip)
 
 * Download the latest dist files individually:
-  * [bloodhound.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/bloodhound.js) (standalone suggestion engine)
+  * [bloodhound.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/bloodhound.js) (standalone suggestion engine)
+  * [bloodhound.min.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/bloodhound.min.js)
   * [typeahead.jquery.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.jquery.js) (standalone UI view)
-  * [typeahead.bundle.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.bundle.js) (*bloodhound.js* + *typeahead.jquery.js*)
-  * [typeahead.bundle.min.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.bundle.min.js)
+  * [typeahead.jquery.min.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.jquery.min.js)
+  * [typeahead.bundle.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/typeahead.bundle.js) (*bloodhound.js* + *typeahead.jquery.js*)
+  * [typeahead.bundle.min.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/typeahead.jquery.min.js)
 
 **Note:** both *bloodhound.js* and *typeahead.jquery.js* have a dependency on
 [jQuery](http://jquery.com/) 1.9+.
