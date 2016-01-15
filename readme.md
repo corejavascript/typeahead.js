@@ -30,12 +30,12 @@ How you acquire typeahead.js is up to you:
 * [Download zipball of latest release](https://github.com/corejavascript/typeahead.js/archive/master.zip)
 
 * Download the latest dist files individually:
-  * [bloodhound.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/bloodhound.js) (standalone suggestion engine)
-  * [bloodhound.min.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/bloodhound.min.js)
-  * [typeahead.jquery.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.jquery.js) (standalone UI view)
-  * [typeahead.jquery.min.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.jquery.min.js)
-  * [typeahead.bundle.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/typeahead.bundle.js) (*bloodhound.js* + *typeahead.jquery.js*)
-  * [typeahead.bundle.min.js](https://github.com/readsoftab/typeahead.rso.js/blob/master/dist/typeahead.jquery.min.js)
+  * [bloodhound.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/bloodhound.js) (standalone suggestion engine)
+  * [bloodhound.min.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/bloodhound.min.js)
+  * [typeahead.jquery.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/typeahead.jquery.js) (standalone UI view)
+  * [typeahead.jquery.min.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/typeahead.jquery.min.js)
+  * [typeahead.bundle.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/typeahead.bundle.js) (*bloodhound.js* + *typeahead.jquery.js*)
+  * [typeahead.bundle.min.js](https://github.com/readsoftab/typeahead.rso.js/raw/master/dist/typeahead.jquery.min.js)
 
 **Note:** both *bloodhound.js* and *typeahead.jquery.js* have a dependency on
 [jQuery](http://jquery.com/) 1.9+.
