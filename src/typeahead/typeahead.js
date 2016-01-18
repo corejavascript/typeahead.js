@@ -135,6 +135,12 @@ var Typeahead = (function() {
 
     _onDatasetRendered: function onDatasetRendered(type, dataset, suggestions, async) {
       this._updateHint();
+
+      if(this.autoselect) {
+        var cursorClass = this.selectors.cursor.substr(1);
+        this.menu.$node.find(this.selectors.suggestion).first().addClass(cursorClass);
+      }
+
       this.eventBus.trigger('render', suggestions, async, dataset);
     },
 
