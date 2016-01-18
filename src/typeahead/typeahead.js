@@ -39,6 +39,8 @@ var Typeahead = (function() {
 
     this.enabled = true;
 
+    this.autoselect = !!o.autoselect;
+
     // activate the typeahead on init if the input has focus
     this.active = false;
     this.input.hasFocus() && this.activate();
@@ -163,6 +165,8 @@ var Typeahead = (function() {
 
       if ($selectable = this.menu.getActiveSelectable()) {
         this.select($selectable) && $e.preventDefault();
+      } else if(this.autoselect) {
+        this.select(this.menu.getTopSelectable()) && $e.preventDefault();
       }
     },
 
