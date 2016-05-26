@@ -4,7 +4,9 @@
 [![bitHound Dependencies](https://www.bithound.io/github/corejavascript/typeahead.js/badges/dependencies.svg)](https://www.bithound.io/github/corejavascript/typeahead.js/master/dependencies/npm)
 [![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/iron/iron/master/LICENSE)
 
-# [corejs-typeahead](https://typeahead.js.org/)
+# [DFEAGILEDEVOPS-typeahead](https://typeahead.js.org/)
+
+This is a fork of the fork below. This fork has been tested only within the context of our project.
 
 This is a maintained fork of [twitter.com](https://twitter.com)'s autocomplete search library, [typeahead.js](https://github.com/twitter/typeahead.js).
 
