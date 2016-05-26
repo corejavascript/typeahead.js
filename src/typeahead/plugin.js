@@ -52,7 +52,7 @@
 
         // hint should be empty on init
         $hint && $hint.val('');
-        $input = prepInput($input, www);
+        $input = prepInput($input, www, o);
 
         // only apply inline styles and make dom changes if necessary
         if (defaultHint || defaultMenu) {
@@ -72,14 +72,16 @@
         input = new Input({ hint: $hint, input: $input, }, www);
         menu = new MenuConstructor({
           node: $menu,
-          datasets: datasets
+          datasets: datasets,
+          ariaOwnsId: o.ariaOwnsId
         }, www);
 
         typeahead = new Typeahead({
           input: input,
           menu: menu,
           eventBus: eventBus,
-          minLength: o.minLength
+          minLength: o.minLength,
+          ariaOwnsId: o.ariaOwnsId
         }, www);
 
         $input.data(keys.www, www);
@@ -223,7 +225,7 @@
     .attr({ autocomplete: 'off', spellcheck: 'false', tabindex: -1 });
   }
 
-  function prepInput($input, www) {
+  function prepInput($input, www, o) {
     // store the original values of the attrs that get modified
     // so modifications can be reverted on destroy
     $input.data(keys.attrs, {
@@ -235,7 +237,7 @@
 
     $input
     .addClass(www.classes.input)
-    .attr({ autocomplete: 'off', spellcheck: false });
+    .attr({ autocomplete: 'off', spellcheck: false, role: "combobox", "aria-autocomplete": "list", "aria-owns": o.ariaOwnsId });
 
     // ie7 does not like it when dir is set to auto
     try { !$input.attr('dir') && $input.attr('dir', 'auto'); } catch (e) {}

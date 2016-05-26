@@ -30,6 +30,7 @@ var Menu = (function() {
     function initializeDataset(oDataset) {
       var node = that.$node.find(oDataset.node).first();
       oDataset.node = node.length ? node : $('<div>').appendTo(that.$node);
+      oDataset.ariaOwnsId = o.ariaOwnsId;
 
       return new Dataset(oDataset, www);
     }

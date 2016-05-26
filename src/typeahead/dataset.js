@@ -59,7 +59,9 @@ var Dataset = (function() {
 
     this.$el = $(o.node)
     .addClass(this.classes.dataset)
-    .addClass(this.classes.dataset + '-' + this.name);
+    .addClass(this.classes.dataset + '-' + this.name)
+    .attr("role", "listbox")
+    .attr("id", o.ariaOwnsId);
   }
 
   // static methods
@@ -183,7 +185,7 @@ var Dataset = (function() {
       var that = this, fragment;
 
       fragment = document.createDocumentFragment();
-      _.each(suggestions, function getSuggestionNode(suggestion) {
+      _.each(suggestions, function getSuggestionNode(suggestion, index) {
         var $el, context;
 
         context = that._injectQuery(query, suggestion);
@@ -191,7 +193,9 @@ var Dataset = (function() {
         $el = $(that.templates.suggestion(context))
         .data(keys.obj, suggestion)
         .data(keys.val, that.displayFn(suggestion))
-        .addClass(that.classes.suggestion + ' ' + that.classes.selectable);
+        .addClass(that.classes.suggestion + ' ' + that.classes.selectable)
+        .attr("role", "option")
+        .attr("id", "ariaitem_" + index);
 
         fragment.appendChild($el[0]);
       });
