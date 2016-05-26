@@ -33,6 +33,7 @@ var Typeahead = (function() {
 
     this.eventBus = o.eventBus;
     this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
+    this.ariaOwnsId = o.ariaOwnsId;
 
     this.input = o.input;
     this.menu = o.menu;
@@ -128,10 +129,13 @@ var Typeahead = (function() {
     },
 
     _onDatasetCleared: function onDatasetCleared() {
+      this.input.$input.attr('aria-expanded', 'false');
+      this.input.$input.removeAttr("aria-activedescendent");
       this._updateHint();
     },
 
     _onDatasetRendered: function onDatasetRendered(type, dataset, suggestions, async) {
+      this.input.$input.attr('aria-expanded', 'true');
       this._updateHint();
       this.eventBus.trigger('render', suggestions, async, dataset);
     },
@@ -396,12 +400,14 @@ var Typeahead = (function() {
         // cursor moved to different selectable
         if (data) {
           this.input.setInputValue(data.val);
+          this.input.$input.attr("aria-activedescendent", $candidate.attr("id"));
         }
 
         // cursor moved off of selectables, back to input
         else {
           this.input.resetInputValue();
           this._updateHint();
+          this.input.$input.removeAttr("aria-activedescendent");
         }
 
         this.eventBus.trigger('cursorchange', payload);

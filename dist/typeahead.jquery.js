@@ -1,7 +1,7 @@
 /*!
  * typeahead.js 0.11.1
  * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2016 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 (function(root, factory) {
@@ -673,7 +673,7 @@
             this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
             this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
             this._resetLastSuggestion();
-            this.$el = $(o.node).addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
+            this.$el = $(o.node).addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name).attr("role", "listbox").attr("id", o.ariaOwnsId);
         }
         Dataset.extractData = function extractData(el) {
             var $el = $(el);
@@ -746,10 +746,10 @@
             _getSuggestionsFragment: function getSuggestionsFragment(query, suggestions) {
                 var that = this, fragment;
                 fragment = document.createDocumentFragment();
-                _.each(suggestions, function getSuggestionNode(suggestion) {
+                _.each(suggestions, function getSuggestionNode(suggestion, index) {
                     var $el, context;
                     context = that._injectQuery(query, suggestion);
-                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion + " " + that.classes.selectable);
+                    $el = $(that.templates.suggestion(context)).data(keys.obj, suggestion).data(keys.val, that.displayFn(suggestion)).addClass(that.classes.suggestion + " " + that.classes.selectable).attr("role", "option").attr("id", "ariaitem_" + index);
                     fragment.appendChild($el[0]);
                 });
                 this.highlight && highlight({
@@ -807,8 +807,9 @@
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
                         that.cancel = $.noop;
-                        that._append(query, suggestions.slice(0, that.limit - rendered));
-                        rendered += suggestions.length;
+                        var idx = Math.abs(rendered - that.limit);
+                        rendered += idx;
+                        that._append(query, suggestions.slice(0, idx));
                         that.async && that.trigger("asyncReceived", query);
                     }
                 }
@@ -865,6 +866,7 @@
             function initializeDataset(oDataset) {
                 var node = that.$node.find(oDataset.node).first();
                 oDataset.node = node.length ? node : $("<div>").appendTo(that.$node);
+                oDataset.ariaOwnsId = o.ariaOwnsId;
                 return new Dataset(oDataset, www);
             }
         }
@@ -1053,6 +1055,7 @@
             www.mixin(this);
             this.eventBus = o.eventBus;
             this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
+            this.ariaOwnsId = o.ariaOwnsId;
             this.input = o.input;
             this.menu = o.menu;
             this.enabled = true;
@@ -1100,9 +1103,12 @@
                 this.select($el);
             },
             _onDatasetCleared: function onDatasetCleared() {
+                this.input.$input.attr("aria-expanded", "false");
+                this.input.$input.removeAttr("aria-activedescendent");
                 this._updateHint();
             },
             _onDatasetRendered: function onDatasetRendered(type, dataset, suggestions, async) {
+                this.input.$input.attr("aria-expanded", "true");
                 this._updateHint();
                 this.eventBus.trigger("render", suggestions, async, dataset);
             },
@@ -1284,9 +1290,11 @@
                     this.menu.setCursor($candidate);
                     if (data) {
                         this.input.setInputValue(data.val);
+                        this.input.$input.attr("aria-activedescendent", $candidate.attr("id"));
                     } else {
                         this.input.resetInputValue();
                         this._updateHint();
+                        this.input.$input.removeAttr("aria-activedescendent");
                     }
                     this.eventBus.trigger("cursorchange", payload);
                     return true;
@@ -1339,7 +1347,7 @@
                     defaultHint && ($hint = buildHintFromInput($input, www));
                     defaultMenu && ($menu = $(www.html.menu).css(www.css.menu));
                     $hint && $hint.val("");
-                    $input = prepInput($input, www);
+                    $input = prepInput($input, www, o);
                     if (defaultHint || defaultMenu) {
                         $wrapper.css(www.css.wrapper);
                         $input.css(defaultHint ? www.css.input : www.css.inputWithNoHint);
@@ -1355,13 +1363,15 @@
                     }, www);
                     menu = new MenuConstructor({
                         node: $menu,
-                        datasets: datasets
+                        datasets: datasets,
+                        ariaOwnsId: o.ariaOwnsId
                     }, www);
                     typeahead = new Typeahead({
                         input: input,
                         menu: menu,
                         eventBus: eventBus,
-                        minLength: o.minLength
+                        minLength: o.minLength,
+                        ariaOwnsId: o.ariaOwnsId
                     }, www);
                     $input.data(keys.www, www);
                     $input.data(keys.typeahead, typeahead);
@@ -1491,7 +1501,7 @@
                 tabindex: -1
             });
         }
-        function prepInput($input, www) {
+        function prepInput($input, www, o) {
             $input.data(keys.attrs, {
                 dir: $input.attr("dir"),
                 autocomplete: $input.attr("autocomplete"),
@@ -1500,7 +1510,10 @@
             });
             $input.addClass(www.classes.input).attr({
                 autocomplete: "off",
-                spellcheck: false
+                spellcheck: false,
+                role: "combobox",
+                "aria-autocomplete": "list",
+                "aria-owns": o.ariaOwnsId
             });
             try {
                 !$input.attr("dir") && $input.attr("dir", "auto");
