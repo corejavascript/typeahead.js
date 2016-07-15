@@ -1,7 +1,7 @@
 /*!
  * typeahead.js 0.11.1
  * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2016 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 (function(root, factory) {
@@ -341,7 +341,7 @@
     }();
     var Transport = function() {
         "use strict";
-        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, sharedCache = new LruCache(10);
+        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, lastXhrRequest = null, sharedCache = new LruCache(10);
         function Transport(o) {
             o = o || {};
             this.cancelled = false;
@@ -370,8 +370,15 @@
                 if (jqXhr = pendingRequests[fingerprint]) {
                     jqXhr.done(done).fail(fail);
                 } else if (pendingRequestsCount < maxPendingRequests) {
-                    pendingRequestsCount++;
-                    pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
+                    if (o.abort) {
+                        o.beforeSend = function() {
+                            if (lastXhrRequest) lastXhrRequest.abort();
+                        };
+                        lastXhrRequest = $.ajax(o).done(done).fail(fail);
+                    } else {
+                        pendingRequestsCount++;
+                        pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
+                    }
                 } else {
                     this.onDeckRequestArgs = [].slice.call(arguments, 0);
                 }
@@ -617,6 +624,7 @@
             this.url = o.url;
             this.prepare = o.prepare;
             this.transform = o.transform;
+            this.abortLastRequest = o.abortLastRequest;
             this.indexResponse = o.indexResponse;
             this.transport = new Transport({
                 cache: o.cache,
@@ -629,7 +637,8 @@
                 return {
                     url: this.url,
                     type: "GET",
-                    dataType: "json"
+                    dataType: "json",
+                    abort: this.abortLastRequest
                 };
             },
             get: function get(query, cb) {
@@ -720,7 +729,8 @@
                 rateLimitBy: "debounce",
                 rateLimitWait: 300,
                 transform: _.identity,
-                transport: null
+                transport: null,
+                abortLastRequest: null
             };
             o = _.isString(o) ? {
                 url: o
@@ -743,6 +753,9 @@
             replace = o.replace;
             wildcard = o.wildcard;
             if (prepare) {
+                if (wildcard) {
+                    prepare = prepareByWildcard;
+                }
                 return prepare;
             }
             if (replace) {
@@ -1730,8 +1743,9 @@
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
                         that.cancel = $.noop;
-                        that._append(query, suggestions.slice(0, that.limit - rendered));
-                        rendered += suggestions.length;
+                        var idx = Math.abs(rendered - that.limit);
+                        rendered += idx;
+                        that._append(query, suggestions.slice(0, idx));
                         that.async && that.trigger("asyncReceived", query);
                     }
                 }

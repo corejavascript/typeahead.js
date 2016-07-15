@@ -1,7 +1,7 @@
 /*!
  * typeahead.js 0.11.1
  * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2016 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 (function(root, factory) {
@@ -807,8 +807,9 @@
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
                         that.cancel = $.noop;
-                        that._append(query, suggestions.slice(0, that.limit - rendered));
-                        rendered += suggestions.length;
+                        var idx = Math.abs(rendered - that.limit);
+                        rendered += idx;
+                        that._append(query, suggestions.slice(0, idx));
                         that.async && that.trigger("asyncReceived", query);
                     }
                 }
