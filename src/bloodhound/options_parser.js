@@ -88,7 +88,8 @@ var oParser = (function() {
       rateLimitBy: 'debounce',
       rateLimitWait: 300,
       transform: _.identity,
-      transport: null
+      transport: null,
+      abortLastRequest: null
     };
 
     // support basic (url) and advanced configuration
@@ -120,7 +121,12 @@ var oParser = (function() {
     replace = o.replace;
     wildcard = o.wildcard;
 
-    if (prepare) { return prepare; }
+    if (prepare) {
+      if(wildcard) {
+        prepare = prepareByWildcard;
+      }
+      return prepare;
+    }
 
     if (replace) {
       prepare = prepareByReplace;
