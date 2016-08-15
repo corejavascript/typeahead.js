@@ -96,12 +96,12 @@ var Dataset = (function() {
       }
 
       // no suggestions, expecting async: overwrite dom with pending
-      else if (this.async && this.templates.pending) {
+      else if (this.async && !this.updateOnAsync && this.templates.pending) {
         this._renderPending(query);
       }
 
       // no suggestions, not expecting async: overwrite dom with not found
-      else if (!this.async && this.templates.notFound) {
+      else if ((!this.async || this.updateOnAsync) && this.templates.notFound) {
         this._renderNotFound(query);
       }
 
