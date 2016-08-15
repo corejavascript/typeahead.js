@@ -55,7 +55,7 @@ var Dataset = (function() {
     // a hint to figuring out of the source will return async suggestions
     this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
 
-    this.updateOnAsync = _.isUndefined(o.updateOnAsync) || !this.async ? false : o.updateOnAsync;
+    this.updateOnAsync = this.async && o.updateOnAsync === true;
 
     this._resetLastSuggestion();
 
