@@ -14,6 +14,7 @@ var Remote = (function() {
     this.url = o.url;
     this.prepare = o.prepare;
     this.transform = o.transform;
+    this.abortLastRequest = o.abortLastRequest;
     this.indexResponse = o.indexResponse;
 
     this.transport = new Transport({
@@ -30,7 +31,7 @@ var Remote = (function() {
     // ### private
 
     _settings: function settings() {
-      return { url: this.url, type: 'GET', dataType: 'json' };
+      return { url: this.url, type: 'GET', dataType: 'json', abort: this.abortLastRequest };
     },
 
     // ### public

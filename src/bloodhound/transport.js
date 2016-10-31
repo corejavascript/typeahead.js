@@ -10,6 +10,7 @@ var Transport = (function() {
   var pendingRequestsCount = 0,
       pendingRequests = {},
       maxPendingRequests = 6,
+      lastXhrRequest= null,
       sharedCache = new LruCache(10);
 
   // constructor
@@ -66,9 +67,19 @@ var Transport = (function() {
 
       // under the pending request threshold, so fire off a request
       else if (pendingRequestsCount < maxPendingRequests) {
-        pendingRequestsCount++;
-        pendingRequests[fingerprint] =
-          this._send(o).done(done).fail(fail).always(always);
+
+        //If we have option 'abortLastRequest' enabled, then on next call we abort previous request
+        //No reason to call 'always' on request, because we prevent all previous requests and we dont need to count pending ones
+        if (o.abort) {
+          o.beforeSend = function() {
+            if(lastXhrRequest) lastXhrRequest.abort();
+          }
+          lastXhrRequest = $.ajax(o).done(done).fail(fail);
+        } else {
+          pendingRequestsCount++;
+          pendingRequests[fingerprint] =
+            this._send(o).done(done).fail(fail).always(always);
+        }
       }
 
       // at the pending request threshold, so hang out in the on deck circle
