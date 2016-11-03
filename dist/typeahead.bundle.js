@@ -2204,14 +2204,10 @@
                 return false;
             },
             autocomplete: function autocomplete($selectable) {
-                var query, data, isValid;
-                query = this.input.getQuery();
-                data = this.menu.getSelectableData($selectable);
-                isValid = data && query !== data.val;
-                if (isValid && !this.eventBus.before("autocomplete", data.obj)) {
+                var data = this.menu.getSelectableData($selectable);
+                if (!this.eventBus.before("autocomplete", data.obj)) {
                     this.input.setQuery(data.val);
                     this.eventBus.trigger("autocomplete", data.obj);
-                    return true;
                 }
                 return false;
             },
