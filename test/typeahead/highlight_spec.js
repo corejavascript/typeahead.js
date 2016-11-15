@@ -108,6 +108,7 @@ describe('highlight', function() {
     expect(testNode.innerHTML).toEqual(after);
   });
 
+
   it('should not match across tags', function() {
     var before = 'a<span>b</span>c',
         after = 'a<span>b</span>c',
@@ -125,11 +126,25 @@ describe('highlight', function() {
     highlight({ node: testNode, pattern: 'abc' });
     expect(testNode.innerHTML).toEqual(after);
   });
+  it('should skip highlight to the html nodes with skip style', function() {
+	var before = '<span class="class">abcd</span>',
+		after = '<span class="class">abcd</span>',
+		testNode = buildTestNode(before);
 
+	highlight({ node: testNode, pattern: ['abc'],ignoreHighlightClass:'class' });
+	expect(testNode.innerHTML).toEqual(after);
+  });
+  it('should skip highlight only to the html nodes with skip style', function() {
+  	var before = 'abcd<span class="class">abcd</span>ddabcd',
+		after = '<strong>abc</strong>d<span class="class">abcd</span>dd<strong>abc</strong>d',
+		testNode = buildTestNode(before);
+
+    highlight({ node: testNode, pattern: ['abc'],ignoreHighlightClass:'class' });
+	expect(testNode.innerHTML).toEqual(after);
+  });
   function buildTestNode(content) {
     var node = document.createElement('div');
     node.innerHTML = content;
-
     return node;
   }
 });
