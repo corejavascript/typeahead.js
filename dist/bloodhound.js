@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 0.11.1
+ * typeahead.js 0.11.2
  * https://github.com/twitter/typeahead.js
  * Copyright 2013-2016 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -12,7 +12,7 @@
     } else if (typeof exports === "object") {
         module.exports = factory(require("jquery"));
     } else {
-        root["Bloodhound"] = factory(root["jQuery"]);
+        root["Bloodhound"] = factory(jQuery);
     }
 })(this, function($) {
     var _ = function() {
@@ -151,7 +151,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "0.11.1";
+    var VERSION = "0.11.2";
     var tokenizers = function() {
         "use strict";
         return {
@@ -356,9 +356,10 @@
     }();
     var Transport = function() {
         "use strict";
-        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, sharedCache = new LruCache(10);
+        var pendingRequestsCount = 0, pendingRequests = {}, sharedCache = new LruCache(10);
         function Transport(o) {
             o = o || {};
+            this.maxPendingRequests = o.maxPendingRequests || 6;
             this.cancelled = false;
             this.lastReq = null;
             this._send = o.transport;
@@ -366,7 +367,7 @@
             this._cache = o.cache === false ? new LruCache(0) : sharedCache;
         }
         Transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
-            maxPendingRequests = num;
+            this.maxPendingRequests = num;
         };
         Transport.resetCache = function resetCache() {
             sharedCache.reset();
@@ -374,7 +375,7 @@
         _.mixin(Transport.prototype, {
             _fingerprint: function fingerprint(o) {
                 o = o || {};
-                return o.url + o.type + $.param(o.data || {});
+                return o.url + o.type + _.isString(o.data) ? o.data : $.param(o.data || {});
             },
             _get: function(o, cb) {
                 var that = this, fingerprint, jqXhr;
@@ -384,7 +385,7 @@
                 }
                 if (jqXhr = pendingRequests[fingerprint]) {
                     jqXhr.done(done).fail(fail);
-                } else if (pendingRequestsCount < maxPendingRequests) {
+                } else if (pendingRequestsCount < this.maxPendingRequests) {
                     pendingRequestsCount++;
                     pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
                 } else {
@@ -636,7 +637,8 @@
             this.transport = new Transport({
                 cache: o.cache,
                 limiter: o.limiter,
-                transport: o.transport
+                transport: o.transport,
+                maxPendingRequests: o.maxPendingRequests
             });
         }
         _.mixin(Remote.prototype, {
