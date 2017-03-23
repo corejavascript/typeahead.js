@@ -364,13 +364,9 @@ var Typeahead = (function() {
     },
 
     autocomplete: function autocomplete($selectable) {
-      var query, data, isValid;
+      var data = this.menu.getSelectableData($selectable);
 
-      query = this.input.getQuery();
-      data = this.menu.getSelectableData($selectable);
-      isValid = data && query !== data.val;
-
-      if (isValid && !this.eventBus.before('autocomplete', data.obj, data.dataset)) {
+      if (data && !this.eventBus.before('autocomplete', data.obj, data.dataset)) {
         this.input.setQuery(data.val);
         this.eventBus.trigger('autocomplete', data.obj, data.dataset);
 
