@@ -63,7 +63,7 @@ describe('Status', function() {
 
   });
 
-  describe('when cleaered is triggered on the datasets', function() {
+  describe('when cleared is triggered on the datasets', function() {
     it('should clear the status text on the suggestion', function() {
       status.$el.text('Text that will be cleared');
 

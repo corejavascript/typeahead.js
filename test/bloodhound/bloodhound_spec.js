@@ -24,7 +24,7 @@ describe('Bloodhound', function() {
       spyOn(this.bloodhound, '_initialize').andCallThrough();
     });
 
-    it('should not initialize if intialize option is false', function() {
+    it('should not initialize if initialize option is false', function() {
       expect(this.bloodhound._initialize).not.toHaveBeenCalled();
     });
 
@@ -38,7 +38,7 @@ describe('Bloodhound', function() {
       expect(this.bloodhound._initialize.callCount).toBe(1);
     });
 
-    it('should reinitialize if reintialize flag is true', function() {
+    it('should reinitialize if reinitialize flag is true', function() {
       var p1, p2;
 
       p1 = this.bloodhound.initialize();
