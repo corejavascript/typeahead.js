@@ -4,12 +4,13 @@
  * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
 
+
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return root["Bloodhound"] = factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         root["Bloodhound"] = factory(root["jQuery"]);
@@ -774,7 +775,7 @@
             } else if (o.wildcard) {
                 prepare = prepareByWildcard;
             } else {
-                prepare = idenityPrepare;
+                prepare = identityPrepare;
             }
             return prepare;
             function prepareByReplace(query, settings) {
@@ -785,7 +786,7 @@
                 settings.url = settings.url.replace(wildcard, encodeURIComponent(query));
                 return settings;
             }
-            function idenityPrepare(query, settings) {
+            function identityPrepare(query, settings) {
                 return settings;
             }
         }
