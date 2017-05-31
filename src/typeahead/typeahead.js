@@ -38,6 +38,8 @@ var Typeahead = (function() {
     this.menu = o.menu;
 
     this.enabled = true;
+    /* allow for optional tab autocomplete */
+    this.tabAutocomplete = o.tabAutocomplete !== false;
 
     // activate the typeahead on init if the input has focus
     this.active = false;
@@ -176,7 +178,7 @@ var Typeahead = (function() {
         this.select($selectable) && $e.preventDefault();
       }
 
-      else if ($selectable = this.menu.getTopSelectable()) {
+      else if (this.tabAutocomplete && ($selectable = this.menu.getTopSelectable())) {
         this.autocomplete($selectable) && $e.preventDefault();
       }
     },

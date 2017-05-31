@@ -120,6 +120,12 @@ When initializing a typeahead, there are a number of options you can configure.
 * `minLength` – The minimum character length needed before suggestions start 
   getting rendered. Defaults to `1`.
 
+* `tabAutocomplete` - Optional, defaults to `true`. 
+    Pressing the TAB-key within the input-field selects the top most entry
+    from the suggestion list. If you set this option to false, tab does what tab
+    usually is expected to do: change the focus on the html-element with the 
+    next tabindex
+    
 * `classNames` – For overriding the default class names used. See 
   [Class Names](#class-names) for more details.
 
