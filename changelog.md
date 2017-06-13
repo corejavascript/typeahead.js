@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.2.0 (not yet released)
+* Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)
+
 ### 1.1.1 January 12, 2017
 * Fix hiding of .visuallyhidden style (introduced in #104) [#107](https://github.com/corejavascript/typeahead.js/pull/107)
 
