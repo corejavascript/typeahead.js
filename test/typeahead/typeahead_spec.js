@@ -354,7 +354,7 @@ describe('Typeahead', function() {
         expect(this.view.select).not.toHaveBeenCalledWith($el);
       });
 
-      it('should not prevent default if no active selectale', function() {
+      it('should not prevent default if no active selectable', function() {
         var $el;
 
         spyOn(this.view, 'select').andReturn(true);
@@ -430,7 +430,7 @@ describe('Typeahead', function() {
         expect(this.view.select).toHaveBeenCalledWith($el);
       });
 
-      it('should prevent default if active selectale', function() {
+      it('should prevent default if active selectable', function() {
         var $el;
 
         $el = $('<bah>');
@@ -453,7 +453,7 @@ describe('Typeahead', function() {
         expect(this.view.select).not.toHaveBeenCalledWith($el);
       });
 
-      it('should not prevent default if no active selectale', function() {
+      it('should not prevent default if no active selectable', function() {
         var $el;
 
         $el = $('<bah>');

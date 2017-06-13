@@ -66,7 +66,7 @@ var DefaultMenu = (function() {
 
     _show: function show() {
       // can't use jQuery#show because $node is a span element we want
-      // display: block; not dislay: inline;
+      // display: block; not display: inline;
       this.$node.css('display', 'block');
     }
   });

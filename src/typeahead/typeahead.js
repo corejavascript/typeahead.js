@@ -111,7 +111,7 @@ var Typeahead = (function() {
         if (_.isMsie() && (isActive || hasActive)) {
           $e.preventDefault();
           // stop immediate in order to prevent Input#_onBlur from
-          // getting exectued
+          // getting executed
           $e.stopImmediatePropagation();
           _.defer(function() { $input.focus(); });
         }
