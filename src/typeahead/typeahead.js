@@ -170,7 +170,7 @@ var Typeahead = (function() {
       var $selectable;
 
       if ($selectable = this.menu.getActiveSelectable()) {
-        this.select($selectable)) && $e.preventDefault() && $e.stopPropagation();
+        this.select($selectable) && $e.preventDefault() && $e.stopPropagation();
       } else if(this.autoselect) {
         this.select(this.menu.getTopSelectable()) && $e.preventDefault() && $e.stopPropagation();
       }
