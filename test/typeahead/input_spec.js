@@ -145,13 +145,13 @@ describe('Input', function() {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should prevent default if no modifers were pressed', function() {
+    it('should prevent default if no modifiers were pressed', function() {
       var $e = simulateKeyEvent(this.$input, 'keydown', KEYS.up);
 
       expect($e.preventDefault).toHaveBeenCalled();
     });
 
-    it('should not prevent default if modifers were pressed', function() {
+    it('should not prevent default if modifiers were pressed', function() {
       var $e = simulateKeyEvent(this.$input, 'keydown', KEYS.up, true);
 
       expect($e.preventDefault).not.toHaveBeenCalled();
@@ -168,13 +168,13 @@ describe('Input', function() {
       expect(spy).toHaveBeenCalled();
     });
 
-    it('should prevent default if no modifers were pressed', function() {
+    it('should prevent default if no modifiers were pressed', function() {
       var $e = simulateKeyEvent(this.$input, 'keydown', KEYS.down);
 
       expect($e.preventDefault).toHaveBeenCalled();
     });
 
-    it('should not prevent default if modifers were pressed', function() {
+    it('should not prevent default if modifiers were pressed', function() {
       var $e = simulateKeyEvent(this.$input, 'keydown', KEYS.down, true);
 
       expect($e.preventDefault).not.toHaveBeenCalled();

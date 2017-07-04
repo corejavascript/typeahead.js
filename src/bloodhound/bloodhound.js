@@ -33,7 +33,7 @@ var Bloodhound = (function() {
       queryTokenizer: o.queryTokenizer
     });
 
-    // hold off on intialization if the intialize option was explicitly false
+    // hold off on initialization if the initialize option was explicitly false
     o.initialize !== false && this.initialize();
   }
 

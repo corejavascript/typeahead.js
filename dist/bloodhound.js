@@ -1,18 +1,19 @@
 /*!
- * typeahead.js 0.11.1
+ * typeahead.js 1.1.1
  * https://github.com/twitter/typeahead.js
- * Copyright 2013-2015 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return root["Bloodhound"] = factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
-        root["Bloodhound"] = factory(jQuery);
+        root["Bloodhound"] = factory(root["jQuery"]);
     }
 })(this, function($) {
     var _ = function() {
@@ -148,18 +149,27 @@
             stringify: function(val) {
                 return _.isString(val) ? val : JSON.stringify(val);
             },
+            guid: function() {
+                function _p8(s) {
+                    var p = (Math.random().toString(16) + "000000000").substr(2, 8);
+                    return s ? "-" + p.substr(0, 4) + "-" + p.substr(4, 4) : p;
+                }
+                return "tt-" + _p8() + _p8(true) + _p8(true) + _p8();
+            },
             noop: function() {}
         };
     }();
-    var VERSION = "0.11.1";
+    var VERSION = "1.1.1";
     var tokenizers = function() {
         "use strict";
         return {
             nonword: nonword,
             whitespace: whitespace,
+            ngram: ngram,
             obj: {
                 nonword: getObjTokenizer(nonword),
-                whitespace: getObjTokenizer(whitespace)
+                whitespace: getObjTokenizer(whitespace),
+                ngram: getObjTokenizer(ngram)
             }
         };
         function whitespace(str) {
@@ -169,6 +179,19 @@
         function nonword(str) {
             str = _.toStr(str);
             return str ? str.split(/\W+/) : [];
+        }
+        function ngram(str) {
+            str = _.toStr(str);
+            var tokens = [], word = "";
+            _.each(str.split(""), function(char) {
+                if (char.match(/\s+/)) {
+                    word = "";
+                } else {
+                    tokens.push(word + char);
+                    word += char;
+                }
+            });
+            return tokens;
         }
         function getObjTokenizer(tokenizer) {
             return function setKey(keys) {
@@ -341,9 +364,10 @@
     }();
     var Transport = function() {
         "use strict";
-        var pendingRequestsCount = 0, pendingRequests = {}, maxPendingRequests = 6, sharedCache = new LruCache(10);
+        var pendingRequestsCount = 0, pendingRequests = {}, sharedCache = new LruCache(10);
         function Transport(o) {
             o = o || {};
+            this.maxPendingRequests = o.maxPendingRequests || 6;
             this.cancelled = false;
             this.lastReq = null;
             this._send = o.transport;
@@ -351,7 +375,7 @@
             this._cache = o.cache === false ? new LruCache(0) : sharedCache;
         }
         Transport.setMaxPendingRequests = function setMaxPendingRequests(num) {
-            maxPendingRequests = num;
+            this.maxPendingRequests = num;
         };
         Transport.resetCache = function resetCache() {
             sharedCache.reset();
@@ -369,7 +393,7 @@
                 }
                 if (jqXhr = pendingRequests[fingerprint]) {
                     jqXhr.done(done).fail(fail);
-                } else if (pendingRequestsCount < maxPendingRequests) {
+                } else if (pendingRequestsCount < this.maxPendingRequests) {
                     pendingRequestsCount++;
                     pendingRequests[fingerprint] = this._send(o).done(done).fail(fail).always(always);
                 } else {
@@ -621,7 +645,8 @@
             this.transport = new Transport({
                 cache: o.cache,
                 limiter: o.limiter,
-                transport: o.transport
+                transport: o.transport,
+                maxPendingRequests: o.maxPendingRequests
             });
         }
         _.mixin(Remote.prototype, {
@@ -750,7 +775,7 @@
             } else if (o.wildcard) {
                 prepare = prepareByWildcard;
             } else {
-                prepare = idenityPrepare;
+                prepare = identityPrepare;
             }
             return prepare;
             function prepareByReplace(query, settings) {
@@ -761,7 +786,7 @@
                 settings.url = settings.url.replace(wildcard, encodeURIComponent(query));
                 return settings;
             }
-            function idenityPrepare(query, settings) {
+            function identityPrepare(query, settings) {
                 return settings;
             }
         }

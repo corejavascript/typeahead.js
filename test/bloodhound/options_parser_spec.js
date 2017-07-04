@@ -84,7 +84,7 @@ describe('options parser', function() {
       expect(o.prefetch.cache).toBe(true);
     });
 
-    it('should default transform to identiy function', function() {
+    it('should default transform to identity function', function() {
       var o = prefetch();
       expect(o.prefetch.transform('foo')).toBe('foo');
     });
@@ -99,7 +99,7 @@ describe('options parser', function() {
       expect(o.prefetch.transport).toBe($.ajax);
     });
 
-    it('should prepend verison to thumbprint', function() {
+    it('should prepend version to thumbprint', function() {
       var o = prefetch();
       expect(o.prefetch.thumbprint).toBe('%VERSION%');
 
@@ -118,8 +118,8 @@ describe('options parser', function() {
 
       waits(0);
       runs(function() {
-        expect(errDeferred.isRejected()).toBe(true);
-        expect(successDeferred.isResolved()).toBe(true);
+        expect(errDeferred.state()).toBe('rejected');
+        expect(successDeferred.state()).toBe('resolved');
       });
 
       function errTransport(q, success, error) { error(); }
@@ -137,7 +137,7 @@ describe('options parser', function() {
       expect(build({ remote: '/remote' }).remote).toBeDefined();
     });
 
-    it('should default transform to identiy function', function() {
+    it('should default transform to identity function', function() {
       var o = remote();
       expect(o.remote.transform('foo')).toBe('foo');
     });
@@ -147,7 +147,7 @@ describe('options parser', function() {
       expect(o.remote.transport).toBe($.ajax);
     });
 
-    it('should default limiter to debouce', function() {
+    it('should default limiter to debounce', function() {
       var o = remote();
       expect(o.remote.limiter.name).toBe('debounce');
     });
@@ -183,8 +183,8 @@ describe('options parser', function() {
 
       waits(0);
       runs(function() {
-        expect(errDeferred.isRejected()).toBe(true);
-        expect(successDeferred.isResolved()).toBe(true);
+        expect(errDeferred.state()).toBe('rejected');
+        expect(successDeferred.state()).toBe('resolved');
       });
 
       function errTransport(q, success, error) { error(); }
