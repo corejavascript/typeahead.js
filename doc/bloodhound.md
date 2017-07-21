@@ -12,7 +12,7 @@ Table of Contents
 * [Usage](#usage)
   * [API](#api)
   * [Options](#options)
-  * [Tokenizers] (#tokenizers)
+  * [Tokenizers](#tokenizers)
   * [Prefetch](#prefetch)
   * [Remote](#remote)
 
