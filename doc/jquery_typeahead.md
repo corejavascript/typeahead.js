@@ -117,6 +117,8 @@ When initializing a typeahead, there are a number of options you can configure.
 
 * `hint` – If `false`, the typeahead will not show a hint. Defaults to `true`.
 
+* `autoselect` – If `true`, the first suggestion will be selected when pressing the Enter key.
+
 * `minLength` – The minimum character length needed before suggestions start 
   getting rendered. Defaults to `1`.
 

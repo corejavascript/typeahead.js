@@ -39,6 +39,8 @@ var Typeahead = (function() {
 
     this.enabled = true;
 
+    this.autoselect = !!o.autoselect;
+
     // activate the typeahead on init if the input has focus
     this.active = false;
     this.input.hasFocus() && this.activate();
@@ -133,6 +135,12 @@ var Typeahead = (function() {
 
     _onDatasetRendered: function onDatasetRendered(type, suggestions, async, dataset) {
       this._updateHint();
+
+      if(this.autoselect) {
+        var cursorClass = this.selectors.cursor.substr(1);
+        this.menu.$node.find(this.selectors.suggestion).first().addClass(cursorClass);
+      }
+
       this.eventBus.trigger('render', suggestions, async, dataset);
     },
 
@@ -162,9 +170,14 @@ var Typeahead = (function() {
       var $selectable;
 
       if ($selectable = this.menu.getActiveSelectable()) {
-        if (this.select($selectable)) {
-          $e.preventDefault();
-          $e.stopPropagation();
+        if (this.select($selectable)){
+            $e.preventDefault();
+            $e.stopPropagation();
+        }
+      } else if(this.autoselect) {
+        if (this.select(this.menu.getTopSelectable())) {
+            $e.preventDefault();
+            $e.stopPropagation();
         }
       }
     },
