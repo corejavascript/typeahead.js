@@ -137,7 +137,7 @@ describe('Menu', function() {
     });
   });
 
-  describe('when asyncReceieved is triggered on a dataset', function() {
+  describe('when asyncReceived is triggered on a dataset', function() {
     it('should propagate event', function() {
       var spy = jasmine.createSpy();
 

@@ -223,8 +223,8 @@
     .removeData()
     .css(www.css.hint)
     .css(getBackgroundStyles($input))
-    .prop('readonly', true)
-    .removeAttr('id name placeholder required')
+    .prop({ readonly: true, required: false })
+    .removeAttr('id name placeholder')
     .removeClass('required')
     .attr({ spellcheck: 'false', tabindex: -1 });
   }

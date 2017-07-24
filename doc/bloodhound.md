@@ -12,7 +12,7 @@ Table of Contents
 * [Usage](#usage)
   * [API](#api)
   * [Options](#options)
-  * [Tokenizers] (#tokenizers)
+  * [Tokenizers](#tokenizers)
   * [Prefetch](#prefetch)
   * [Remote](#remote)
 
@@ -296,6 +296,17 @@ When configuring `remote`, the following options are available.
 * `transform` – A function with the signature `transform(response)` that allows
    you to transform the remote response before the Bloodhound instance operates 
    on it. Defaults to the [identity function].
+
+* `transport` – A function with the signature `transport(options, onSuccess, onError)`
+  that allows you to specify a custom transport:
+  ```javascript
+  transport: function (options, onSuccess, onError) {
+    // Modify the options or replace the next line
+    $.ajax(options)
+      .done(function(data, textStatus, request) { onSuccess(data); })
+      .fail(function(request, textStatus, errorThrown) { onError(errorThrown); });
+  }
+  ```
 
 <!-- section links -->
 

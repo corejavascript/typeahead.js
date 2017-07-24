@@ -104,7 +104,7 @@ describe('Dataset', function() {
       expect(this.dataset.$el).not.toContainText('one');
     });
 
-    it('should ignore subesequent invocations of sync', function() {
+    it('should ignore subsequent invocations of sync', function() {
       this.source.andCallFake(multipleSync);
       this.dataset.update('woah');
 
@@ -148,7 +148,7 @@ describe('Dataset', function() {
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('should trigger asyncCanceled when pending aysnc is canceled', function() {
+    it('should trigger asyncCanceled when pending async is canceled', function() {
       var spy = jasmine.createSpy();
 
       this.dataset.async = true;
@@ -182,7 +182,7 @@ describe('Dataset', function() {
       });
     });
 
-    it('should trigger asyncReceived when aysnc is received', function() {
+    it('should trigger asyncReceived when async is received', function() {
       var spy = jasmine.createSpy();
 
       this.dataset.async = true;
