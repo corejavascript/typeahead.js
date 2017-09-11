@@ -174,11 +174,11 @@ var SearchIndex = window.SearchIndex = (function() {
     var lenArrayA = arrayA.length, lenArrayB = arrayB.length;
 
     while (ai < lenArrayA && bi < lenArrayB) {
-      if (arrayA[ai] < arrayB[bi]) {
+      if (arrayA[ai].toString() < arrayB[bi].toString()) {
         ai++;
       }
 
-      else if (arrayA[ai] > arrayB[bi]) {
+      else if (arrayA[ai].toString() > arrayB[bi].toString()) {
         bi++;
       }
 
