@@ -7,7 +7,7 @@
 * Add autoselect option [#154](https://github.com/corejavascript/typeahead.js/pull/154)
 * Update example link to corejavascript docs [#149](https://github.com/corejavascript/typeahead.js/pull/149)
 * Fix link in bloodhound docs [#134](https://github.com/corejavascript/typeahead.js/pull/134)
-* Minor change to docs to log object instead of assuming it's a string [#157]https://github.com/corejavascript/typeahead.js/pull/157
+* Minor change to docs to log object instead of assuming it's a string [#157](https://github.com/corejavascript/typeahead.js/pull/157)
 
 
 ### 1.1.1 January 12, 2017
