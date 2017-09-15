@@ -2,6 +2,13 @@
 
 ### 1.2.0 (not yet released)
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)
+* Add jQuery 3 support [#102](https://github.com/corejavascript/typeahead.js/pull/102)
+* Remove 'required' class from cloned input field [#125](https://github.com/corejavascript/typeahead.js/pull/125)
+* Add autoselect option [#154](https://github.com/corejavascript/typeahead.js/pull/154)
+* Update example link to corejavascript docs [#149](https://github.com/corejavascript/typeahead.js/pull/149)
+* Fix link in bloodhound docs [#134](https://github.com/corejavascript/typeahead.js/pull/134)
+* Minor change to docs to log object instead of assuming it's a string [#157]https://github.com/corejavascript/typeahead.js/pull/157
+
 
 ### 1.1.1 January 12, 2017
 * Fix hiding of .visuallyhidden style (introduced in #104) [#107](https://github.com/corejavascript/typeahead.js/pull/107)
