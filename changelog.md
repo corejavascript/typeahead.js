@@ -1,6 +1,6 @@
 # Changelog
 
-### 1.2.0 (not yet released)
+### 1.2.0 September 25, 2017
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)
 * Add jQuery 3 support [#102](https://github.com/corejavascript/typeahead.js/pull/102)
 * Remove 'required' class from cloned input field [#125](https://github.com/corejavascript/typeahead.js/pull/125)
