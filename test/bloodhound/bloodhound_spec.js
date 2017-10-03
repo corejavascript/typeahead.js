@@ -97,8 +97,9 @@ describe('Bloodhound', function() {
       this.bloodhound.prefetch.fromNetwork.andCallFake(fakeFromNetwork);
 
       expect(this.bloodhound.all()).toEqual([]);
-      this.bloodhound.initialize();
-      expect(this.bloodhound.all()).toEqual([{ foo: 'bar' }]);
+      this.bloodhound.initialize().then(function() {
+        expect(this.bloodhound.all()).toEqual([{ foo: 'bar' }]);
+      });
 
       function fakeFromNetwork(cb) { cb(null, []); }
     });
@@ -224,7 +225,7 @@ describe('Bloodhound', function() {
 
       this.bloodhound = build({ remote: '/remote' });
       this.bloodhound.remote.get.andCallFake(fakeGet);
-      this.bloodhound.search('dog', $.noop, spy);
+      this.bloodhound.search('dog', _.noop, spy);
 
       expect(spy.callCount).toBe(1);
 

@@ -27,7 +27,7 @@ var EventBus = (function() {
 
   function EventBus(o) {
     if (!o || !o.el) {
-      $.error('EventBus initialized without el');
+      throw new Error('EventBus initialized without el');
     }
 
     this.$el = $(o.el);

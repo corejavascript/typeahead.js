@@ -15,7 +15,7 @@ var LruCache = (function() {
 
     // if max size is less than 0, provide a noop cache
     if (this.maxSize <= 0) {
-      this.set = this.get = $.noop;
+      this.set = this.get = _.noop;
     }
   }
 

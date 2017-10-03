@@ -24,7 +24,7 @@
     initialize: function initialize(o, datasets) {
       var www;
 
-      datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
+      datasets = Array.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
 
       o = o || {};
       www = WWW(o.classNames);
@@ -290,7 +290,7 @@
   function $elOrNull(obj) {
     var isValid, $el;
 
-    isValid = _.isJQuery(obj) || _.isElement(obj);
+    isValid = (obj instanceof $) || _.isElement(obj);
     $el = isValid ? $(obj).first() : [];
 
     return $el.length ? $el : null;

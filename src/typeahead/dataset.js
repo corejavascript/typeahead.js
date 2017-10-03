@@ -28,15 +28,15 @@ var Dataset = (function() {
     o.templates.notFound = o.templates.notFound || o.templates.empty;
 
     if (!o.source) {
-      $.error('missing source');
+      throw new Error('missing source');
     }
 
     if (!o.node) {
-      $.error('missing node');
+      throw new Error('missing node');
     }
 
     if (o.name && !isValidName(o.name)) {
-      $.error('invalid dataset name: ' + o.name);
+      throw new Error('invalid dataset name: ' + o.name);
     }
 
     www.mixin(this);
@@ -245,7 +245,7 @@ var Dataset = (function() {
 
       this.cancel = function cancel() {
         canceled = true;
-        that.cancel = $.noop;
+        that.cancel = _.noop;
         that.async && that.trigger('asyncCanceled', query, that.name);
       };
 
@@ -272,7 +272,7 @@ var Dataset = (function() {
         // if the update has been canceled or if the query has changed
         // do not render the suggestions as they've become outdated
         if (!canceled && rendered < that.limit) {
-          that.cancel = $.noop;
+          that.cancel = _.noop;
           var idx = Math.abs(rendered - that.limit);
           rendered += idx;
           that._append(query, suggestions.slice(0, idx));
@@ -282,7 +282,7 @@ var Dataset = (function() {
     },
 
     // cancel function gets set in #update
-    cancel: $.noop,
+    cancel: _.noop,
 
     clear: function clear() {
       this._empty();

@@ -18,15 +18,15 @@ var Typeahead = (function() {
     o = o || {};
 
     if (!o.input) {
-      $.error('missing input');
+      throw new Error('missing input');
     }
 
     if (!o.menu) {
-      $.error('missing menu');
+      throw new Error('missing menu');
     }
 
     if (!o.eventBus) {
-      $.error('missing event bus');
+      throw new Error('missing event bus');
     }
 
     www.mixin(this);

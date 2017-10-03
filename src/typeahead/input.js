@@ -26,7 +26,7 @@ var Input = (function() {
     o = o || {};
 
     if (!o.input) {
-      $.error('input is missing');
+      throw new Error('input is missing');
     }
 
     www.mixin(this);
