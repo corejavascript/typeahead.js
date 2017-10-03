@@ -53,8 +53,6 @@ var _ = (function() {
 
     isElement: function(obj) { return !!(obj && obj.nodeType === 1); },
 
-    isJQuery: function(obj) { return obj instanceof $; },
-
     toStr: function toStr(s) {
       return (_.isUndefined(s) || s === null) ? '' : s + '';
     },

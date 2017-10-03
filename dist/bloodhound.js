@@ -7,15 +7,15 @@
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], function() {
-            return root["Bloodhound"] = factory();
+        define([ "Promise" ], function(a0) {
+            return root["Bloodhound"] = factory(a0);
         });
     } else if (typeof module === "object" && module.exports) {
-        module.exports = factory();
+        module.exports = factory(require("Promise"));
     } else {
-        root["Bloodhound"] = factory();
+        root["Bloodhound"] = factory(root["Promise"]);
     }
-})(this, function() {
+})(this, function(Promise) {
     var _ = function() {
         "use strict";
         return {
@@ -55,9 +55,6 @@
             },
             isElement: function(obj) {
                 return !!(obj && obj.nodeType === 1);
-            },
-            isJQuery: function(obj) {
-                return obj instanceof $;
             },
             toStr: function toStr(s) {
                 return _.isUndefined(s) || s === null ? "" : s + "";

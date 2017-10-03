@@ -7,15 +7,15 @@
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([], function() {
-            return root["Bloodhound"] = factory();
+        define([ "Promise" ], function(a0) {
+            return root["Bloodhound"] = factory(a0);
         });
     } else if (typeof module === "object" && module.exports) {
-        module.exports = factory();
+        module.exports = factory(require("Promise"));
     } else {
-        root["Bloodhound"] = factory();
+        root["Bloodhound"] = factory(root["Promise"]);
     }
-})(this, function() {
+})(this, function(Promise) {
     var _ = function() {
         "use strict";
         return {
@@ -55,9 +55,6 @@
             },
             isElement: function(obj) {
                 return !!(obj && obj.nodeType === 1);
-            },
-            isJQuery: function(obj) {
-                return obj instanceof $;
             },
             toStr: function toStr(s) {
                 return _.isUndefined(s) || s === null ? "" : s + "";
@@ -1118,9 +1115,6 @@
             isElement: function(obj) {
                 return !!(obj && obj.nodeType === 1);
             },
-            isJQuery: function(obj) {
-                return obj instanceof $;
-            },
             toStr: function toStr(s) {
                 return _.isUndefined(s) || s === null ? "" : s + "";
             },
@@ -2014,7 +2008,7 @@
                 this.cancel();
                 this.cancel = function cancel() {
                     canceled = true;
-                    that.cancel = $.noop;
+                    that.cancel = _.noop;
                     that.async && that.trigger("asyncCanceled", query, that.name);
                 };
                 this.source(query, sync, async);
@@ -2034,7 +2028,7 @@
                 function async(suggestions) {
                     suggestions = suggestions || [];
                     if (!canceled && rendered < that.limit) {
-                        that.cancel = $.noop;
+                        that.cancel = _.noop;
                         var idx = Math.abs(rendered - that.limit);
                         rendered += idx;
                         that._append(query, suggestions.slice(0, idx));
@@ -2042,7 +2036,7 @@
                     }
                 }
             },
-            cancel: $.noop,
+            cancel: _.noop,
             clear: function clear() {
                 this._empty();
                 this.cancel();
@@ -2839,7 +2833,7 @@
         }
         function $elOrNull(obj) {
             var isValid, $el;
-            isValid = _.isJQuery(obj) || _.isElement(obj);
+            isValid = obj instanceof $ || _.isElement(obj);
             $el = isValid ? $(obj).first() : [];
             return $el.length ? $el : null;
         }
