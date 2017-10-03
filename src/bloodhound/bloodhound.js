@@ -122,7 +122,7 @@ var Bloodhound = (function() {
     },
 
     get: function get(ids) {
-      ids = _.isArray(ids) ? ids : [].slice.call(arguments);
+      ids = Array.isArray(ids) ? ids : [].slice.call(arguments);
       return this.index.get(ids);
     },
 

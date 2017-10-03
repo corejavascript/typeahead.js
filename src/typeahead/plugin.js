@@ -24,7 +24,7 @@
     initialize: function initialize(o, datasets) {
       var www;
 
-      datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
+      datasets = Array.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
 
       o = o || {};
       www = WWW(o.classNames);

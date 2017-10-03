@@ -48,7 +48,7 @@ var tokenizers = (function() {
 
   function getObjTokenizer(tokenizer) {
     return function setKey(keys) {
-      keys = _.isArray(keys) ? keys : [].slice.call(arguments, 0);
+      keys = Array.isArray(keys) ? keys : [].slice.call(arguments, 0);
 
       return function tokenize(o) {
         var tokens = [];

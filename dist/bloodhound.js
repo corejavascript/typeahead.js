@@ -34,7 +34,6 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: Array.isArray,
             isFunction: function(obj) {
                 return typeof obj === "function";
             },
@@ -302,7 +301,7 @@
         }
         function getObjTokenizer(tokenizer) {
             return function setKey(keys) {
-                keys = _.isArray(keys) ? keys : [].slice.call(arguments, 0);
+                keys = Array.isArray(keys) ? keys : [].slice.call(arguments, 0);
                 return function tokenize(o) {
                     var tokens = [];
                     _.each(keys, function(k) {
@@ -564,7 +563,7 @@
             },
             add: function(data) {
                 var that = this;
-                data = _.isArray(data) ? data : [ data ];
+                data = Array.isArray(data) ? data : [ data ];
                 _.each(data, function(datum) {
                     var id, tokens;
                     that.datums[id = that.identify(datum)] = datum;
@@ -1014,7 +1013,7 @@
                 return this;
             },
             get: function get(ids) {
-                ids = _.isArray(ids) ? ids : [].slice.call(arguments);
+                ids = Array.isArray(ids) ? ids : [].slice.call(arguments);
                 return this.index.get(ids);
             },
             search: function search(query, sync, async) {

@@ -42,7 +42,7 @@ var SearchIndex = window.SearchIndex = (function() {
     add: function(data) {
       var that = this;
 
-      data = _.isArray(data) ? data : [data];
+      data = Array.isArray(data) ? data : [data];
 
       _.each(data, function(datum) {
         var id, tokens;

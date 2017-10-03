@@ -34,7 +34,6 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: Array.isArray,
             isFunction: function(obj) {
                 return typeof obj === "function";
             },
@@ -302,7 +301,7 @@
         }
         function getObjTokenizer(tokenizer) {
             return function setKey(keys) {
-                keys = _.isArray(keys) ? keys : [].slice.call(arguments, 0);
+                keys = Array.isArray(keys) ? keys : [].slice.call(arguments, 0);
                 return function tokenize(o) {
                     var tokens = [];
                     _.each(keys, function(k) {
@@ -564,7 +563,7 @@
             },
             add: function(data) {
                 var that = this;
-                data = _.isArray(data) ? data : [ data ];
+                data = Array.isArray(data) ? data : [ data ];
                 _.each(data, function(datum) {
                     var id, tokens;
                     that.datums[id = that.identify(datum)] = datum;
@@ -1014,7 +1013,7 @@
                 return this;
             },
             get: function get(ids) {
-                ids = _.isArray(ids) ? ids : [].slice.call(arguments);
+                ids = Array.isArray(ids) ? ids : [].slice.call(arguments);
                 return this.index.get(ids);
             },
             search: function search(query, sync, async) {
@@ -1093,7 +1092,6 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: Array.isArray,
             isFunction: function(obj) {
                 return typeof obj === "function";
             },
@@ -1593,7 +1591,7 @@
             if (!o.node || !o.pattern) {
                 return;
             }
-            o.pattern = _.isArray(o.pattern) ? o.pattern : [ o.pattern ];
+            o.pattern = Array.isArray(o.pattern) ? o.pattern : [ o.pattern ];
             regex = getRegex(o.pattern, o.caseSensitive, o.wordsOnly, o.diacriticInsensitive);
             traverse(o.node, hightlightTextNode);
             function hightlightTextNode(textNode) {
@@ -2614,7 +2612,7 @@
         methods = {
             initialize: function initialize(o, datasets) {
                 var www;
-                datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
+                datasets = Array.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
                 o = o || {};
                 www = WWW(o.classNames);
                 return this.each(attach);

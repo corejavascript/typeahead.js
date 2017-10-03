@@ -34,7 +34,6 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: Array.isArray,
             isFunction: function(obj) {
                 return typeof obj === "function";
             },
@@ -534,7 +533,7 @@
             if (!o.node || !o.pattern) {
                 return;
             }
-            o.pattern = _.isArray(o.pattern) ? o.pattern : [ o.pattern ];
+            o.pattern = Array.isArray(o.pattern) ? o.pattern : [ o.pattern ];
             regex = getRegex(o.pattern, o.caseSensitive, o.wordsOnly, o.diacriticInsensitive);
             traverse(o.node, hightlightTextNode);
             function hightlightTextNode(textNode) {
@@ -1555,7 +1554,7 @@
         methods = {
             initialize: function initialize(o, datasets) {
                 var www;
-                datasets = _.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
+                datasets = Array.isArray(datasets) ? datasets : [].slice.call(arguments, 1);
                 o = o || {};
                 www = WWW(o.classNames);
                 return this.each(attach);

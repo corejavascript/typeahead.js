@@ -97,8 +97,9 @@ describe('Bloodhound', function() {
       this.bloodhound.prefetch.fromNetwork.andCallFake(fakeFromNetwork);
 
       expect(this.bloodhound.all()).toEqual([]);
-      this.bloodhound.initialize();
-      expect(this.bloodhound.all()).toEqual([{ foo: 'bar' }]);
+      this.bloodhound.initialize().then(function() {
+        expect(this.bloodhound.all()).toEqual([{ foo: 'bar' }]);
+      });
 
       function fakeFromNetwork(cb) { cb(null, []); }
     });

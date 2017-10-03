@@ -25,8 +25,6 @@ var _ = (function() {
 
     isNumber: function(obj) { return typeof obj === 'number'; },
 
-    isArray: Array.isArray,
-
     isFunction: function(obj) { return typeof obj === "function" },
 
     isObject: function( obj ) {
