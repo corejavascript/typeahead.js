@@ -1,15 +1,16 @@
 /*!
- * typeahead.js 1.2.0
+ * typeahead.js 1.2.1
  * https://github.com/twitter/typeahead.js
  * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         factory(root["jQuery"]);
@@ -33,9 +34,22 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: $.isArray,
-            isFunction: $.isFunction,
-            isObject: $.isPlainObject,
+            isArray: Array.isArray,
+            isFunction: function(obj) {
+                return typeof obj === "function";
+            },
+            isObject: function(obj) {
+                var proto, Ctor, hasOwn = {}.hasOwnProperty;
+                if (!obj || {}.toString.call(obj) !== "[object Object]") {
+                    return false;
+                }
+                proto = Object.getPrototypeOf(obj);
+                if (!proto) {
+                    return true;
+                }
+                Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
+                return typeof Ctor === "function" && hasOwn.toString.call(Ctor) === hasOwn.toString.call(Object);
+            },
             isUndefined: function(obj) {
                 return typeof obj === "undefined";
             },
@@ -48,21 +62,81 @@
             toStr: function toStr(s) {
                 return _.isUndefined(s) || s === null ? "" : s + "";
             },
-            bind: $.proxy,
-            each: function(collection, cb) {
-                $.each(collection, reverseArgs);
-                function reverseArgs(index, value) {
-                    return cb(value, index);
+            bind: function(fn, context) {
+                var tmp, args, proxy;
+                if (typeof context === "string") {
+                    tmp = fn[context];
+                    context = fn;
+                    fn = tmp;
                 }
+                if (!this.isFunction(fn)) {
+                    return undefined;
+                }
+                args = [].slice.call(arguments, 2);
+                proxy = function() {
+                    return fn.apply(context || this, args.concat([].slice.call(arguments)));
+                };
+                proxy.guid = fn.guid = fn.guid || this.guid();
+                return proxy;
             },
-            map: $.map,
-            filter: $.grep,
+            each: function(collection, cb) {
+                (function(obj, callback) {
+                    var length, i = 0;
+                    if (Array.isArray(obj)) {
+                        length = obj.length;
+                        for (;i < length; i++) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    } else {
+                        for (i in obj) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    }
+                    return obj;
+                })(collection, function(index, value) {
+                    return cb(value, index);
+                });
+            },
+            map: function(elems, callback, arg) {
+                var length, value, i = 0, ret = [];
+                if (Array.isArray(elems)) {
+                    length = elems.length;
+                    for (;i < length; i++) {
+                        value = callback(elems[i], i, arg);
+                        if (value != null) {
+                            ret.push(value);
+                        }
+                    }
+                } else {
+                    for (i in elems) {
+                        value = callback(elems[i], i, arg);
+                        if (value != null) {
+                            ret.push(value);
+                        }
+                    }
+                }
+                return [].concat.apply([], ret);
+            },
+            filter: function(elems, callback, invert) {
+                var callbackInverse, matches = [], i = 0, length = elems.length, callbackExpect = !invert;
+                for (;i < length; i++) {
+                    callbackInverse = !callback(elems[i], i);
+                    if (callbackInverse !== callbackExpect) {
+                        matches.push(elems[i]);
+                    }
+                }
+                return matches;
+            },
             every: function(obj, test) {
                 var result = true;
                 if (!obj) {
                     return result;
                 }
-                $.each(obj, function(key, val) {
+                this.each(obj, function(val, key) {
                     if (!(result = test.call(null, val, key, obj))) {
                         return false;
                     }
@@ -74,19 +148,56 @@
                 if (!obj) {
                     return result;
                 }
-                $.each(obj, function(key, val) {
+                this.each(obj, function(val, key) {
                     if (result = test.call(null, val, key, obj)) {
                         return false;
                     }
                 });
                 return !!result;
             },
-            mixin: $.extend,
+            mixin: function() {
+                var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
+                if (typeof target === "boolean") {
+                    deep = target;
+                    target = arguments[i] || {};
+                    i++;
+                }
+                if (typeof target !== "object" && !this.isFunction(target)) {
+                    target = {};
+                }
+                if (i === length) {
+                    target = this;
+                    i--;
+                }
+                for (;i < length; i++) {
+                    if ((options = arguments[i]) != null) {
+                        for (name in options) {
+                            src = target[name];
+                            copy = options[name];
+                            if (target === copy) {
+                                continue;
+                            }
+                            if (deep && copy && (this.isObject(copy) || (copyIsArray = Array.isArray(copy)))) {
+                                if (copyIsArray) {
+                                    copyIsArray = false;
+                                    clone = src && Array.isArray(src) ? src : [];
+                                } else {
+                                    clone = src && this.isObject(src) ? src : {};
+                                }
+                                target[name] = this.extend(deep, clone, copy);
+                            } else if (copy !== undefined) {
+                                target[name] = copy;
+                            }
+                        }
+                    }
+                }
+                return target;
+            },
             identity: function(x) {
                 return x;
             },
             clone: function(obj) {
-                return $.extend(true, {}, obj);
+                return this.extend(true, {}, obj);
             },
             getIdGenerator: function() {
                 var counter = 0;
@@ -95,7 +206,7 @@
                 };
             },
             templatify: function templatify(obj) {
-                return $.isFunction(obj) ? obj : template;
+                return this.isFunction(obj) ? obj : template;
                 function template() {
                     return String(obj);
                 }
@@ -265,7 +376,7 @@
         };
         function EventBus(o) {
             if (!o || !o.el) {
-                $.error("EventBus initialized without el");
+                throw new Error("EventBus initialized without el");
             }
             this.$el = $(o.el);
         }
@@ -484,7 +595,7 @@
         function Input(o, www) {
             o = o || {};
             if (!o.input) {
-                $.error("input is missing");
+                throw new Error("input is missing");
             }
             www.mixin(this);
             this.$hint = $(o.hint);
@@ -710,13 +821,13 @@
             o.templates = o.templates || {};
             o.templates.notFound = o.templates.notFound || o.templates.empty;
             if (!o.source) {
-                $.error("missing source");
+                throw new Error("missing source");
             }
             if (!o.node) {
-                $.error("missing node");
+                throw new Error("missing node");
             }
             if (o.name && !isValidName(o.name)) {
-                $.error("invalid dataset name: " + o.name);
+                throw new Error("invalid dataset name: " + o.name);
             }
             www.mixin(this);
             this.highlight = !!o.highlight;
@@ -912,7 +1023,7 @@
             var that = this;
             o = o || {};
             if (!o.node) {
-                $.error("node is required");
+                throw new Error("node is required");
             }
             www.mixin(this);
             this.$node = $(o.node);
@@ -1152,13 +1263,13 @@
             var onFocused, onBlurred, onEnterKeyed, onTabKeyed, onEscKeyed, onUpKeyed, onDownKeyed, onLeftKeyed, onRightKeyed, onQueryChanged, onWhitespaceChanged;
             o = o || {};
             if (!o.input) {
-                $.error("missing input");
+                throw new Error("missing input");
             }
             if (!o.menu) {
-                $.error("missing menu");
+                throw new Error("missing menu");
             }
             if (!o.eventBus) {
-                $.error("missing event bus");
+                throw new Error("missing event bus");
             }
             www.mixin(this);
             this.eventBus = o.eventBus;

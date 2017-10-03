@@ -16,7 +16,7 @@ var SearchIndex = window.SearchIndex = (function() {
     o = o || {};
 
     if (!o.datumTokenizer || !o.queryTokenizer) {
-      $.error('datumTokenizer and queryTokenizer are both required');
+      throw new Error( 'datumTokenizer and queryTokenizer are both required' );
     }
 
     this.identify = o.identify || _.stringify;

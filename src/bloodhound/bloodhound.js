@@ -71,46 +71,42 @@ var Bloodhound = (function() {
     // ### private
 
     _loadPrefetch: function loadPrefetch() {
-      var that = this, deferred, serialized;
+      var that = this, serialized;
 
-      deferred = $.Deferred();
-
-      if (!this.prefetch) {
-        deferred.resolve();
-      }
-
-      else if (serialized = this.prefetch.fromCache()) {
-        this.index.bootstrap(serialized);
-        deferred.resolve();
-      }
-
-      else {
-        this.prefetch.fromNetwork(done);
-      }
-
-      return deferred.promise();
-
-      function done(err, data) {
-        if (err) { return deferred.reject(); }
-
-        that.add(data);
-        that.prefetch.store(that.index.serialize());
-        deferred.resolve();
-      }
+      return new Promise( function (resolve, reject) {
+        if (!that.prefetch) {
+          resolve();
+        } else if (serialized = that.prefetch.fromCache()) {
+          that.index.bootstrap(serialized);
+          resolve();
+        } else {
+          that.prefetch.fromNetwork(function(err, data) {
+            if (err) {
+              reject(err);
+              return;
+            }
+            that.add(data);
+            that.prefetch.store(that.index.serialize());
+            resolve();
+          });
+        }
+      });
     },
 
     _initialize: function initialize() {
-      var that = this, deferred;
+      var that = this;
 
       // in case this is a reinitialization, clear previous data
       this.clear();
 
-      (this.initPromise = this._loadPrefetch())
-      .done(addLocalToIndex); // local must be added to index after prefetch
+      // local must be added to index after prefetch
+      this.initPromise = this._loadPrefetch().then(function() {
+        that.add(that.local);
+      }).catch(function(e) {
+        console.error(e.message);
+      });
 
       return this.initPromise;
-
-      function addLocalToIndex() { that.add(that.local); }
     },
 
     // ### public

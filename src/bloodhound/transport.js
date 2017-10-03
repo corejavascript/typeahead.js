@@ -47,7 +47,7 @@ var Transport = (function() {
 
     _fingerprint: function fingerprint(o) {
       o = o || {};
-      return o.url + o.type + $.param(o.data || {});
+      return o.url + o.type + _.param(o.data || {});
     },
 
     _get: function(o, cb) {
@@ -61,14 +61,14 @@ var Transport = (function() {
 
       // a request is already in progress, piggyback off of it
       if (jqXhr = pendingRequests[fingerprint]) {
-        jqXhr.done(done).fail(fail);
+        jqXhr.then(done).catch(fail);
       }
 
       // under the pending request threshold, so fire off a request
       else if (pendingRequestsCount < this.maxPendingRequests) {
         pendingRequestsCount++;
         pendingRequests[fingerprint] =
-          this._send(o).done(done).fail(fail).always(always);
+          this._send(o).then(done).catch(fail).then(always);
       }
 
       // at the pending request threshold, so hang out in the on deck circle
@@ -102,7 +102,7 @@ var Transport = (function() {
     get: function(o, cb) {
       var resp, fingerprint;
 
-      cb = cb || $.noop;
+      cb = cb || _.noop;
       o = _.isString(o) ? { url: o } : (o || {});
 
       fingerprint = this._fingerprint(o);

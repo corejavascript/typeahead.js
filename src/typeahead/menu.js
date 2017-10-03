@@ -16,7 +16,7 @@ var Menu = (function() {
     o = o || {};
 
     if (!o.node) {
-      $.error('node is required');
+      throw new Error('node is required');
     }
 
     www.mixin(this);

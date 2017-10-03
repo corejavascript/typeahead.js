@@ -28,15 +28,15 @@ var Dataset = (function() {
     o.templates.notFound = o.templates.notFound || o.templates.empty;
 
     if (!o.source) {
-      $.error('missing source');
+      throw new Error('missing source');
     }
 
     if (!o.node) {
-      $.error('missing node');
+      throw new Error('missing node');
     }
 
     if (o.name && !isValidName(o.name)) {
-      $.error('invalid dataset name: ' + o.name);
+      throw new Error('invalid dataset name: ' + o.name);
     }
 
     www.mixin(this);
