@@ -131,10 +131,10 @@ module.exports = function(grunt) {
         src: '<%= tempDir %>/bloodhound.js',
         objectToExport: 'Bloodhound',
         deps: {
-          default: ['Promise'],
-          amd: ['Promise'],
-          cjs: ['Promise'],
-          global: ['Promise']
+          default: [],
+          amd: [],
+          cjs: [],
+          global: []
         }
       },
       typeahead: {

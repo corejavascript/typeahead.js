@@ -7,15 +7,15 @@
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([ "Promise" ], function(a0) {
-            return root["Bloodhound"] = factory(a0);
+        define([], function() {
+            return root["Bloodhound"] = factory();
         });
     } else if (typeof module === "object" && module.exports) {
-        module.exports = factory(require("Promise"));
+        module.exports = factory();
     } else {
-        root["Bloodhound"] = factory(root["Promise"]);
+        root["Bloodhound"] = factory();
     }
-})(this, function(Promise) {
+})(this, function() {
     var _ = function() {
         "use strict";
         return {
