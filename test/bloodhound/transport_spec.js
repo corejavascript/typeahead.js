@@ -36,7 +36,7 @@ describe('Transport', function() {
     this.transport = new Transport({ transport: $.ajax, maxPendingRequests: 2 });
 
     for (var i = 0; i < 5; i++) {
-      this.transport.get('/test' + i, $.noop);
+      this.transport.get('/test' + i, _.noop);
     }
 
     expect(ajaxRequests.length).toBe(2);
@@ -44,7 +44,7 @@ describe('Transport', function() {
 
   it('should open up to 6 maxPendingRequests by default', function() {
     for (var i = 0; i < 10; i++) {
-      this.transport.get('/test' + i, $.noop);
+      this.transport.get('/test' + i, _.noop);
     }
 
     expect(ajaxRequests.length).toBe(6);
@@ -54,7 +54,7 @@ describe('Transport', function() {
     this.transport = new Transport({ transport: $.ajax, limiter: limiter });
 
     for (var i = 0; i < 5; i++) {
-      this.transport.get('/test' + i, $.noop);
+      this.transport.get('/test' + i, _.noop);
     }
 
     jasmine.Clock.tick(100);
@@ -66,10 +66,10 @@ describe('Transport', function() {
   it('should cache most recent requests', function() {
     var spy1 = jasmine.createSpy(), spy2 = jasmine.createSpy();
 
-    this.transport.get('/test1', $.noop);
+    this.transport.get('/test1', _.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok);
 
-    this.transport.get('/test2', $.noop);
+    this.transport.get('/test2', _.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok1);
 
     expect(ajaxRequests.length).toBe(2);
@@ -89,9 +89,9 @@ describe('Transport', function() {
   it('should not cache requests if cache option is false', function() {
     this.transport = new Transport({ transport: $.ajax, cache: false });
 
-    this.transport.get('/test1', $.noop);
+    this.transport.get('/test1', _.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok);
-    this.transport.get('/test1', $.noop);
+    this.transport.get('/test1', _.noop);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok);
 
     expect(ajaxRequests.length).toBe(2);
@@ -119,7 +119,7 @@ describe('Transport', function() {
     var spy = jasmine.createSpy();
 
     for (var i = 0; i < 6; i++) {
-      this.transport.get('/test' + i, $.noop);
+      this.transport.get('/test' + i, _.noop);
     }
 
     this.transport.get('/test' + i, spy);
@@ -150,7 +150,7 @@ describe('Transport', function() {
   it('should not send cancelled requests', function() {
     this.transport = new Transport({ transport: $.ajax, limiter: limiter });
 
-    this.transport.get('/test', $.noop);
+    this.transport.get('/test', _.noop);
     this.transport.cancel();
 
     jasmine.Clock.tick(100);
@@ -163,7 +163,7 @@ describe('Transport', function() {
     this.transport = new Transport({ transport: $.ajax, limiter: limiter });
 
     // warm cache
-    this.transport.get('/test1', $.noop);
+    this.transport.get('/test1', _.noop);
     jasmine.Clock.tick(100);
     mostRecentAjaxRequest().response(fixtures.ajaxResps.ok);
 
@@ -173,8 +173,8 @@ describe('Transport', function() {
     // within the same rate-limit cycle, request test2 and test1. test2 becomes
     // outdated after test1 is requested and no request is sent for test1
     // because it's a cache hit
-    this.transport.get('/test2', $.noop);
-    this.transport.get('/test1', $.noop);
+    this.transport.get('/test2', _.noop);
+    this.transport.get('/test1', _.noop);
 
     jasmine.Clock.tick(100);
 

@@ -2,15 +2,15 @@ describe('options parser', function() {
 
   function build(o) {
     return oParser(_.mixin({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop
     }, o || {}));
   }
 
   function prefetch(o) {
     return oParser({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop,
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop,
       prefetch: _.mixin({
         url: '/example'
       }, o || {})
@@ -19,8 +19,8 @@ describe('options parser', function() {
 
   function remote(o) {
     return oParser({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop,
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop,
       remote: _.mixin({
         url: '/example'
       }, o || {})
