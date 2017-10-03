@@ -20,6 +20,7 @@ module.exports = function(config) {
     files: [
       'bower_components/jquery/dist/jquery.js',
       './node_modules/phantomjs-polyfill/bind-polyfill.js',
+      'lib/Promise.js',
       'src/common/utils.js',
       'src/bloodhound/version.js',
       'src/bloodhound/tokenizers.js',
