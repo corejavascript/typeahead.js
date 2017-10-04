@@ -16,6 +16,9 @@ var semver = require('semver'),
       'src/bloodhound/options_parser.js',
       'src/bloodhound/bloodhound.js'
       ],
+      typeahead_banner: [
+        'src/typeahead/wrapper.start.js'
+      ],
       typeahead: [
       'src/typeahead/www.js',
       'src/typeahead/event_bus.js',
@@ -27,7 +30,8 @@ var semver = require('semver'),
       'src/typeahead/status.js',
       'src/typeahead/default_menu.js',
       'src/typeahead/typeahead.js',
-      'src/typeahead/plugin.js'
+      'src/typeahead/plugin.js',
+      'src/typeahead/wrapper.end.js'
       ]
     };
 
@@ -46,6 +50,13 @@ module.exports = function(grunt) {
       ' */\n\n'
     ].join('\n'),
 
+    concat: {
+      typeahead: {
+        src: files.typeahead_banner.concat(files.common.concat(files.typeahead)),
+        dest: '<%= tempDir %>/typeahead.jquery.js'
+      }
+    },
+
     uglify: {
       options: {
         banner: '<%= banner %>'
@@ -61,14 +72,14 @@ module.exports = function(grunt) {
         src: files.common.concat(files.bloodhound),
         dest: '<%= tempDir %>/bloodhound.js'
       },
-      concatTypeahead: {
+      beautifyTypeahead: {
         options: {
           mangle: false,
           beautify: true,
           compress: false,
           banner: ''
         },
-        src: files.common.concat(files.typeahead),
+        src: '<%= tempDir %>/typeahead.jquery.js',
         dest: '<%= tempDir %>/typeahead.jquery.js'
       },
 
@@ -136,15 +147,6 @@ module.exports = function(grunt) {
       bloodhound: {
         src: '<%= tempDir %>/bloodhound.js',
         objectToExport: 'Bloodhound',
-        deps: {
-          default: ['$'],
-          amd: ['jquery'],
-          cjs: ['jquery'],
-          global: ['jQuery']
-        }
-      },
-      typeahead: {
-        src: '<%= tempDir %>/typeahead.jquery.js',
         deps: {
           default: ['$'],
           amd: ['jquery'],
@@ -312,10 +314,10 @@ module.exports = function(grunt) {
   grunt.registerTask('lint', 'jshint');
   grunt.registerTask('dev', ['build', 'concurrent:dev']);
   grunt.registerTask('build', [
+    'concat:typeahead',
+    'uglify:beautifyTypeahead',
     'uglify:concatBloodhound',
-    'uglify:concatTypeahead',
     'umd:bloodhound',
-    'umd:typeahead',
     'uglify:bloodhound',
     'uglify:bloodhoundMin',
     'uglify:typeahead',

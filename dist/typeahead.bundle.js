@@ -1,15 +1,16 @@
 /*!
- * typeahead.js 1.2.0
+ * typeahead.js 1.2.1
  * https://github.com/twitter/typeahead.js
  * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return root["Bloodhound"] = factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         root["Bloodhound"] = factory(root["jQuery"]);
@@ -158,7 +159,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "1.2.0";
+    var VERSION = "1.2.1";
     var tokenizers = function() {
         "use strict";
         return {
@@ -953,13 +954,21 @@
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
-        define([ "jquery" ], function(a0) {
-            return factory(a0);
-        });
-    } else if (typeof exports === "object") {
-        module.exports = factory(require("jquery"));
+        define([ "jquery" ], factory);
+    } else if (typeof module === "object" && module.exports) {
+        module.exports = function(root, jQuery) {
+            if (jQuery === undefined) {
+                if (typeof window !== "undefined") {
+                    jQuery = require("jquery");
+                } else {
+                    jQuery = require("jquery")(root);
+                }
+            }
+            factory(jQuery);
+            return jQuery;
+        };
     } else {
-        factory(root["jQuery"]);
+        factory(jQuery);
     }
 })(this, function($) {
     var _ = function() {
