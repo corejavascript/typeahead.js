@@ -2,15 +2,15 @@ describe('options parser', function() {
 
   function build(o) {
     return oParser(_.mixin({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop
     }, o || {}));
   }
 
   function prefetch(o) {
     return oParser({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop,
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop,
       prefetch: _.mixin({
         url: '/example'
       }, o || {})
@@ -19,8 +19,8 @@ describe('options parser', function() {
 
   function remote(o) {
     return oParser({
-      datumTokenizer: $.noop,
-      queryTokenizer: $.noop,
+      datumTokenizer: _.noop,
+      queryTokenizer: _.noop,
       remote: _.mixin({
         url: '/example'
       }, o || {})
@@ -94,9 +94,9 @@ describe('options parser', function() {
       expect(o.prefetch.cacheKey).toBe(o.prefetch.url);
     });
 
-    it('should default transport to jQuery.ajax', function() {
+    it('should default transport to _.ajax', function() {
       var o = prefetch();
-      expect(o.prefetch.transport).toBe($.ajax);
+      expect(o.prefetch.transport).toBe(_.ajax);
     });
 
     it('should prepend version to thumbprint', function() {
@@ -142,9 +142,9 @@ describe('options parser', function() {
       expect(o.remote.transform('foo')).toBe('foo');
     });
 
-    it('should default transport to jQuery.ajax', function() {
+    it('should default transport to _.ajax', function() {
       var o = remote();
-      expect(o.remote.transport).toBe($.ajax);
+      expect(o.remote.transport).toBe(_.ajax);
     });
 
     it('should default limiter to debounce', function() {

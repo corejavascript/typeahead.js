@@ -2,42 +2,41 @@ var semver = require('semver'),
     f = require('util').format,
     files = {
       common: [
-      'src/common/utils.js'
+        'src/common/utils.js'
       ],
       bloodhound: [
-      'src/bloodhound/version.js',
-      'src/bloodhound/tokenizers.js',
-      'src/bloodhound/lru_cache.js',
-      'src/bloodhound/persistent_storage.js',
-      'src/bloodhound/transport.js',
-      'src/bloodhound/search_index.js',
-      'src/bloodhound/prefetch.js',
-      'src/bloodhound/remote.js',
-      'src/bloodhound/options_parser.js',
-      'src/bloodhound/bloodhound.js'
+        'src/bloodhound/version.js',
+        'src/bloodhound/deferred.js',
+        'src/bloodhound/tokenizers.js',
+        'src/bloodhound/lru_cache.js',
+        'src/bloodhound/persistent_storage.js',
+        'src/bloodhound/transport.js',
+        'src/bloodhound/search_index.js',
+        'src/bloodhound/prefetch.js',
+        'src/bloodhound/remote.js',
+        'src/bloodhound/options_parser.js',
+        'src/bloodhound/bloodhound.js'
       ],
       typeahead: [
-      'src/typeahead/www.js',
-      'src/typeahead/event_bus.js',
-      'src/typeahead/event_emitter.js',
-      'src/typeahead/highlight.js',
-      'src/typeahead/input.js',
-      'src/typeahead/dataset.js',
-      'src/typeahead/menu.js',
-      'src/typeahead/status.js',
-      'src/typeahead/default_menu.js',
-      'src/typeahead/typeahead.js',
-      'src/typeahead/plugin.js'
+        'src/typeahead/www.js',
+        'src/typeahead/event_bus.js',
+        'src/typeahead/event_emitter.js',
+        'src/typeahead/highlight.js',
+        'src/typeahead/input.js',
+        'src/typeahead/dataset.js',
+        'src/typeahead/menu.js',
+        'src/typeahead/status.js',
+        'src/typeahead/default_menu.js',
+        'src/typeahead/typeahead.js',
+        'src/typeahead/plugin.js'
       ]
     };
 
 module.exports = function(grunt) {
   grunt.initConfig({
     version: grunt.file.readJSON('package.json').version,
-
     tempDir: 'dist_temp',
     buildDir: 'dist',
-
     banner: [
       '/*!',
       ' * typeahead.js <%= version %>',
@@ -45,12 +44,10 @@ module.exports = function(grunt) {
       ' * Copyright 2013-<%= grunt.template.today("yyyy") %> Twitter, Inc. and other contributors; Licensed MIT',
       ' */\n\n'
     ].join('\n'),
-
     uglify: {
       options: {
         banner: '<%= banner %>'
       },
-
       concatBloodhound: {
         options: {
           mangle: false,
@@ -71,7 +68,6 @@ module.exports = function(grunt) {
         src: files.common.concat(files.typeahead),
         dest: '<%= tempDir %>/typeahead.jquery.js'
       },
-
       bloodhound: {
         options: {
           mangle: false,
@@ -131,16 +127,15 @@ module.exports = function(grunt) {
         dest: '<%= buildDir %>/typeahead.bundle.min.js'
       }
     },
-
     umd: {
       bloodhound: {
         src: '<%= tempDir %>/bloodhound.js',
         objectToExport: 'Bloodhound',
         deps: {
-          default: ['$'],
-          amd: ['jquery'],
-          cjs: ['jquery'],
-          global: ['jQuery']
+          default: [],
+          amd: [],
+          cjs: [],
+          global: []
         }
       },
       typeahead: {
@@ -153,7 +148,6 @@ module.exports = function(grunt) {
         }
       }
     },
-
     replace: {
       version: {
         options: {
@@ -175,7 +169,6 @@ module.exports = function(grunt) {
         ]
       }
     },
-
     jshint: {
       options: {
         jshintrc: '.jshintrc'
@@ -184,14 +177,12 @@ module.exports = function(grunt) {
       test: ['test/**/*_spec.js', 'test/integration/test.js'],
       gruntfile: ['Gruntfile.js']
     },
-
     watch: {
       js: {
         files: 'src/**/*',
         tasks: 'build'
       }
     },
-
     exec: {
       npm_publish: 'npm publish',
       git_is_clean: 'test -z "$(git status --porcelain)"',
@@ -220,22 +211,18 @@ module.exports = function(grunt) {
         'rm -rf typeahead.js'
       ].join(' && ')
     },
-
     clean: {
       dist: 'dist'
     },
-
     connect: {
       server: {
         options: { port: 8888, keepalive: true }
       }
     },
-
     concurrent: {
       options: { logConcurrentOutput: true },
       dev: ['server', 'watch']
     },
-
     step: {
       options: {
         option: false
@@ -245,7 +232,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('release', '#shipit', function(version) {
     var curVersion = grunt.config.get('version');
-
     version = semver.inc(curVersion, version) || version;
 
     if (!semver.valid(version) || semver.lte(version, curVersion)) {

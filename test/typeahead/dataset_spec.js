@@ -42,7 +42,7 @@ describe('Dataset', function() {
       var d = new Dataset({
         name: 'a space',
         node: $('<div>'),
-        source: $.noop
+        source: _.noop
       }, www);
     }
   });

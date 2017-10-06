@@ -47,7 +47,7 @@ var Transport = (function() {
 
     _fingerprint: function fingerprint(o) {
       o = o || {};
-      return o.url + o.type + $.param(o.data || {});
+      return o.url + o.type + _.param(o.data || {});
     },
 
     _get: function(o, cb) {
@@ -59,20 +59,16 @@ var Transport = (function() {
       // or if the url doesn't match the last url Transport#get was invoked with
       if (this.cancelled || fingerprint !== this.lastReq) { return; }
 
-      // a request is already in progress, piggyback off of it
       if (jqXhr = pendingRequests[fingerprint]) {
+        // a request is already in progress, piggyback off of it
         jqXhr.done(done).fail(fail);
-      }
-
-      // under the pending request threshold, so fire off a request
-      else if (pendingRequestsCount < this.maxPendingRequests) {
+      } else if (pendingRequestsCount < this.maxPendingRequests) {
+        // under the pending request threshold, so fire off a request
         pendingRequestsCount++;
         pendingRequests[fingerprint] =
           this._send(o).done(done).fail(fail).always(always);
-      }
-
-      // at the pending request threshold, so hang out in the on deck circle
-      else {
+      } else {
+        // at the pending request threshold, so hang out in the on deck circle
         this.onDeckRequestArgs = [].slice.call(arguments, 0);
       }
 
@@ -102,7 +98,7 @@ var Transport = (function() {
     get: function(o, cb) {
       var resp, fingerprint;
 
-      cb = cb || $.noop;
+      cb = cb || _.noop;
       o = _.isString(o) ? { url: o } : (o || {});
 
       fingerprint = this._fingerprint(o);
@@ -110,13 +106,11 @@ var Transport = (function() {
       this.cancelled = false;
       this.lastReq = fingerprint;
 
-      // in-memory cache hit
       if (resp = this._cache.get(fingerprint)) {
+        // in-memory cache hit
         cb(null, resp);
-      }
-
-      // go to network
-      else {
+      } else {
+        // go to network
         this._get(o, cb);
       }
     },

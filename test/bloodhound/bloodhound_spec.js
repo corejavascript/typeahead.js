@@ -224,7 +224,7 @@ describe('Bloodhound', function() {
 
       this.bloodhound = build({ remote: '/remote' });
       this.bloodhound.remote.get.andCallFake(fakeGet);
-      this.bloodhound.search('dog', $.noop, spy);
+      this.bloodhound.search('dog', _.noop, spy);
 
       expect(spy.callCount).toBe(1);
 
@@ -344,7 +344,6 @@ describe('Bloodhound', function() {
 
   // helper functions
   // ----------------
-
   function datumTokenizer(d) { return $.trim(d.value).split(/\s+/); }
   function queryTokenizer(s) { return $.trim(s).split(/\s+/); }
 });

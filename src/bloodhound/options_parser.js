@@ -27,8 +27,13 @@ var oParser = (function() {
     o = _.mixin(defaults, o || {});
 
     // throw error if required options are not set
-    !o.datumTokenizer && $.error('datumTokenizer is required');
-    !o.queryTokenizer && $.error('queryTokenizer is required');
+    if(!o.datumTokenizer) {
+      throw new Error('datumTokenizer is required');
+    }
+
+    if(!o.queryTokenizer) {
+      throw new Error('queryTokenizer is required');
+    }
 
     sorter = o.sorter;
     o.sorter = sorter ? function(x) { return x.sort(sorter); } : _.identity;
@@ -61,14 +66,16 @@ var oParser = (function() {
     o = _.mixin(defaults, o);
 
     // throw error if required options are not set
-    !o.url && $.error('prefetch requires url to be set');
+    if(!o.url) {
+      throw new Error('prefetch requires url to be set');
+    }
 
     // DEPRECATED: filter will be dropped in v1
     o.transform = o.filter || o.transform;
 
     o.cacheKey = o.cacheKey || o.url;
     o.thumbprint = VERSION + o.thumbprint;
-    o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
+    o.transport = o.transport ? callbackToDeferred(o.transport) : _.ajax;
 
     return o;
   }
@@ -96,14 +103,16 @@ var oParser = (function() {
     o = _.mixin(defaults, o);
 
     // throw error if required options are not set
-    !o.url && $.error('remote requires url to be set');
+    if(!o.url) {
+      throw new Error('remote requires url to be set');
+    }
 
     // DEPRECATED: filter will be dropped in v1
     o.transform = o.filter || o.transform;
 
     o.prepare = toRemotePrepare(o);
     o.limiter = toLimiter(o);
-    o.transport = o.transport ? callbackToDeferred(o.transport) : $.ajax;
+    o.transport = o.transport ? callbackToDeferred(o.transport) : _.ajax;
 
     delete o.replace;
     delete o.wildcard;
@@ -175,7 +184,7 @@ var oParser = (function() {
 
   function callbackToDeferred(fn) {
     return function wrapper(o) {
-      var deferred = $.Deferred();
+      var deferred = Deferred();
 
       fn(o, onSuccess, onError);
 
