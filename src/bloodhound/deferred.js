@@ -1,7 +1,7 @@
 // Author : Sudhir Jonathan
 // Source : https://github.com/sudhirj/simply-deferred
-(function() {
-  var Deferred, PENDING, REJECTED, RESOLVED, VERSION, _when, after, execute, flatten, has, installInto, isArguments, isPromise, wrap,
+var Deferred = (function() {
+  var Deferred, PENDING, REJECTED, RESOLVED, VERSION, _when, after, execute, flatten, has, isArguments, isPromise, d,
     slice = [].slice;
 
   VERSION = '3.1.0';
@@ -48,14 +48,6 @@
       if (--times < 1) {
         return func.apply(this, arguments);
       }
-    };
-  };
-
-  wrap = function(func, wrapper) {
-    return function() {
-      var args;
-      args = [func].concat(Array.prototype.slice.call(arguments, 0));
-      return wrapper.apply(this, args);
     };
   };
 
@@ -173,7 +165,7 @@
 
   _when = function() {
     var def, defs, finish, i, len, resolutionArgs, trigger;
-    defs = Array.prototype.slice.apply(arguments);
+    defs = slice.apply(arguments);
     if (defs.length === 1) {
       if (isPromise(defs[0])) {
         return defs[0];
@@ -209,62 +201,9 @@
     return trigger.promise();
   };
 
-  installInto = function(fw) {
-    fw.Deferred = function() {
-      return new Deferred();
-    };
-    fw.ajax = wrap(fw.ajax, function(ajax, options) {
-      var createWrapper, def, promise, xhr;
-      if (options == null) {
-        options = {};
-      }
-      def = new Deferred();
-      createWrapper = function(wrapped, finisher) {
-        return wrap(wrapped, function() {
-          var args, func;
-          func = arguments[0], args = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-          if (func) {
-            func.apply(null, args);
-          }
-          return finisher.apply(null, args);
-        });
-      };
-      options.success = createWrapper(options.success, def.resolve);
-      options.error = createWrapper(options.error, def.reject);
-      xhr = ajax(options);
-      promise = def.promise();
-      promise.abort = function() {
-        return xhr.abort();
-      };
-      return promise;
-    });
-    return fw.when = _when;
+  var d = function() {
+    return new Deferred();
   };
-
-  if (typeof exports !== 'undefined') {
-    exports.Deferred = function() {
-      return new Deferred();
-    };
-    exports.when = _when;
-    exports.installInto = installInto;
-  } else if (typeof define === 'function' && define.amd) {
-    define(function() {
-      if (typeof Zepto !== 'undefined') {
-        return installInto(Zepto);
-      } else {
-        Deferred.when = _when;
-        Deferred.installInto = installInto;
-        return Deferred;
-      }
-    });
-  } else if (typeof Zepto !== 'undefined') {
-    installInto(Zepto);
-  } else {
-    this.Deferred = function() {
-      return new Deferred();
-    };
-    this.Deferred.when = _when;
-    this.Deferred.installInto = installInto;
-  }
-
-}).call(this);
+  d.when = _when;
+  return d;
+})();
