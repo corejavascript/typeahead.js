@@ -28,11 +28,11 @@
     if (isArguments(array)) {
       return flatten(Array.prototype.slice.call(array));
     }
-    if (!Array.isArray(array)) {
+    if (!_.isArray(array)) {
       return [array];
     }
     return array.reduce(function(memo, value) {
-      if (Array.isArray(value)) {
+      if (_.isArray(value)) {
         return memo.concat(flatten(value));
       }
       memo.push(value);

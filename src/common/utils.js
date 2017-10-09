@@ -25,7 +25,7 @@ var _ = (function() {
 
     isNumber: function(obj) { return typeof obj === 'number'; },
 
-    isArray: Array.isArray,
+    isArray: function(obj) { return Object.prototype.toString.call(obj) === '[object Array]'; },
 
     isFunction: function(obj) { return typeof obj === "function" },
 
@@ -65,23 +65,23 @@ var _ = (function() {
   		}
   		// Quick check to determine if target is callable, in the spec
   		// this throws a TypeError, but we will just return undefined.
-  		if ( !this.isFunction( fn ) ) {
+  		if ( !_.isFunction( fn ) ) {
   			return undefined;
   		}
   		// Simulated bind
   		args = [].slice.call( arguments, 2 );
   		proxy = function() {
-  			return fn.apply( context || this, args.concat( [].slice.call( arguments ) ) );
+  			return fn.apply( context || _, args.concat( [].slice.call( arguments ) ) );
   		};
       // Set the guid of unique handler to the same of original handler, so it can be removed
-      proxy.guid = fn.guid = fn.guid || this.guid();
+      proxy.guid = fn.guid = fn.guid || _.guid();
   		return proxy;
   	},
 
     each: function(collection, cb) {
       (function( obj, callback ) {
     		var length, i = 0;
-    		if ( Array.isArray( obj ) ) {
+    		if ( _.isArray( obj ) ) {
     			length = obj.length;
     			for ( ; i < length; i++ ) {
     				if ( callback.call( obj[ i ], i, obj[ i ] ) === false ) {
@@ -102,7 +102,7 @@ var _ = (function() {
     map: function( elems, callback, arg ) {
   		var length, value, i = 0, ret = [];
   		// Go through the array, translating each of the items to their new values
-  		if ( Array.isArray( elems ) ) {
+  		if ( _.isArray( elems ) ) {
   			length = elems.length;
   			for ( ; i < length; i++ ) {
   				value = callback( elems[ i ], i, arg );
@@ -139,7 +139,7 @@ var _ = (function() {
     every: function(obj, test) {
       var result = true;
       if (!obj) { return result; }
-      this.each(obj, function(val, key) {
+      _.each(obj, function(val, key) {
         if (!(result = test.call(null, val, key, obj))) {
           return false;
         }
@@ -150,7 +150,7 @@ var _ = (function() {
     some: function(obj, test) {
       var result = false;
       if (!obj) { return result; }
-      this.each(obj, function(val, key) {
+      _.each(obj, function(val, key) {
         if (result = test.call(null, val, key, obj)) {
           return false;
         }
@@ -171,13 +171,13 @@ var _ = (function() {
     	}
 
     	// Handle case when target is a string or something (possible in deep copy)
-    	if ( typeof target !== "object" && !this.isFunction( target ) ) {
+    	if ( typeof target !== "object" && !_.isFunction( target ) ) {
     		target = {};
     	}
 
     	// Extend this object itself if only one argument is passed
     	if ( i === length ) {
-    		target = this;
+    		target = _;
     		i--;
     	}
 
@@ -193,19 +193,19 @@ var _ = (function() {
     					continue;
     				}
     				// Recurse if we're merging plain objects or arrays
-    				if ( deep && copy && ( this.isObject( copy ) ||
-    					( copyIsArray = Array.isArray( copy ) ) ) ) {
+    				if ( deep && copy && ( _.isObject( copy ) ||
+    					( copyIsArray = _.isArray( copy ) ) ) ) {
 
     					if ( copyIsArray ) {
     						copyIsArray = false;
-    						clone = src && Array.isArray( src ) ? src : [];
+    						clone = src && _.isArray( src ) ? src : [];
 
     					} else {
-    						clone = src && this.isObject( src ) ? src : {};
+    						clone = src && _.isObject( src ) ? src : {};
     					}
 
     					// Never move original objects, clone them
-    					target[ name ] = this.mixin( deep, clone, copy );
+    					target[ name ] = _.mixin( deep, clone, copy );
 
     				// Don't bring in undefined values
     				} else if ( copy !== undefined ) {
@@ -220,7 +220,7 @@ var _ = (function() {
 
     identity: function(x) { return x; },
 
-    clone: function(obj) { return this.mixin(true, {}, obj); },
+    clone: function(obj) { return _.mixin(true, {}, obj); },
 
     getIdGenerator: function() {
       var counter = 0;
@@ -228,7 +228,7 @@ var _ = (function() {
     },
 
     templatify: function templatify(obj) {
-      return this.isFunction(obj) ? obj : template;
+      return _.isFunction(obj) ? obj : template;
       function template() { return String(obj); }
     },
 
@@ -279,7 +279,7 @@ var _ = (function() {
     },
 
     ajax: function(opts, onSuccess, onFailure) {
-      var that = _, url;
+      var url;
       if(_.isObject(opts)) {
         url = opts.url;
       } else {
@@ -314,26 +314,26 @@ var _ = (function() {
         req.send();
         return req;
       })(function(resp) {
-        that.defer(function() { onSuccess(resp); deferred.resolve(resp); });
+        _.defer(function() { onSuccess(resp); deferred.resolve(resp); });
       }, function(err) {
-        that.defer(function() { onFailure(err); deferred.reject(err); });
+        _.defer(function() { onFailure(err); deferred.reject(err); });
       });
       return deferred;
     },
 
     param: function( a ) {
-    	var prefix, s = [], that = this, buildParams = function(prefix, obj, add) {
+    	var prefix, s = [], buildParams = function(prefix, obj, add) {
         var name;
-        if ( Array.isArray( obj ) ) {
+        if ( _.isArray( obj ) ) {
           // Serialize array item.
-          that.each( obj, function( v, i ) {
+          _.each( obj, function( v, i ) {
             if (/\[\]$/.test( prefix ) ) {
               add( prefix, v );
             } else {
               buildParams(prefix + "[" + ( typeof v === "object" && v != null ? i : "" ) + "]", v, add);
             }
           });
-        } else if ( that.type( obj ) === "object" ) {
+        } else if ( _.type( obj ) === "object" ) {
           // Serialize object item.
           for ( name in obj ) {
             buildParams( prefix + "[" + name + "]", obj[ name ], add );
@@ -344,7 +344,7 @@ var _ = (function() {
         }
       }, add = function( key, valueOrFunction ) {
         // If value is a function, invoke it and use its return value
-        var value = this.isFunction( valueOrFunction ) ? valueOrFunction() : valueOrFunction;
+        var value = _.isFunction( valueOrFunction ) ? valueOrFunction() : valueOrFunction;
         s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value == null ? "" : value );
       };
       for ( prefix in a ) {
