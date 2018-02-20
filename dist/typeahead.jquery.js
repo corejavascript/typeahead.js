@@ -1,15 +1,16 @@
 /*!
- * typeahead.js 1.2.0
- * https://github.com/twitter/typeahead.js
- * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
+ * typeahead.js 1.2.1
+ * https://github.com/corejavascript/typeahead.js
+ * Copyright 2013-2018 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         factory(root["jQuery"]);
@@ -1167,6 +1168,7 @@
             this.menu = o.menu;
             this.enabled = true;
             this.autoselect = !!o.autoselect;
+            this.tabAutocomplete = o.tabAutocomplete !== false;
             this.active = false;
             this.input.hasFocus() && this.activate();
             this.dir = this.input.getLangDir();
@@ -1256,7 +1258,7 @@
                 var $selectable;
                 if ($selectable = this.menu.getActiveSelectable()) {
                     this.select($selectable) && $e.preventDefault();
-                } else if ($selectable = this.menu.getTopSelectable()) {
+                } else if (this.tabAutocomplete && ($selectable = this.menu.getTopSelectable())) {
                     this.autocomplete($selectable) && $e.preventDefault();
                 }
             },
@@ -1492,7 +1494,8 @@
                         menu: menu,
                         eventBus: eventBus,
                         minLength: o.minLength,
-                        autoselect: o.autoselect
+                        autoselect: o.autoselect,
+                        tabAutocomplete: o.tabAutocomplete !== false
                     }, www);
                     $input.data(keys.www, www);
                     $input.data(keys.typeahead, typeahead);
