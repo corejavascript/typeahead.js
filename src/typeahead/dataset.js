@@ -319,8 +319,13 @@ var Dataset = (function() {
       pending: templates.pending && _.templatify(templates.pending),
       header: templates.header && _.templatify(templates.header),
       footer: templates.footer && _.templatify(templates.footer),
-      suggestion: templates.suggestion || suggestionTemplate
+      suggestion: templates.suggestion ? userSuggestionTemplate : suggestionTemplate
     };
+
+    function userSuggestionTemplate(context) {
+      var template = templates.suggestion;
+      return $(template(context)).attr("id", _.guid());
+    }
 
     function suggestionTemplate(context) {
       return $('<div role="option">').attr('id', _.guid()).text(displayFn(context));
