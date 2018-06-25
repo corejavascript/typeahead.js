@@ -351,9 +351,12 @@ var Typeahead = (function() {
       return !this.isOpen();
     },
 
-    setVal: function setVal(val) {
+    setVal: function setVal(val, silent) {
+      if(silent){
+        this.menu.empty();
+      }
       // expect val to be a string, so be safe, and coerce
-      this.input.setQuery(_.toStr(val));
+      this.input.setQuery(_.toStr(val), silent);
     },
 
     getVal: function getVal() {

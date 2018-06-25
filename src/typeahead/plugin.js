@@ -176,6 +176,24 @@
       }
 
       else {
+        // Sets the query in 'silent' mode so that it doesn't fire
+        // an autocomplete request.
+        ttEach(this, function(t) { t.setVal(_.toStr(newVal), true); });
+        return this;
+      }
+    },
+
+    // Same thing as the 'val' method, except it allows events to
+    // be triggered that execute autocomplete requests (namely, queryChanged).
+    query: function query(newVal) {
+      var query;
+
+      if (!arguments.length) {
+        ttEach(this.first(), function(t) { query = t.getVal(); });
+        return query;
+      }
+
+      else {
         ttEach(this, function(t) { t.setVal(_.toStr(newVal)); });
         return this;
       }
