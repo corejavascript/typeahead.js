@@ -7,10 +7,10 @@
     "aria"
   ],
   "homepage": "http://corejavascript.github.io/typeahead.js/",
-  "bugs": "https://github.com/corejavascript/typeahead.js/issues",
+  "bugs": "https://github.com/cybexer/typeahead.js/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/corejavascript/typeahead.js.git"
+    "url": "https://github.com/cybexer/typeahead.js.git"
   },
   "author": {
     "name": "Twitter, Inc.",
@@ -32,6 +32,9 @@
     {
       "name": "Jeremy Booker",
       "url": "https://twitter.com/jbook3r"
+    },
+    {
+      "name": "Kris-Gerhard Aabrams"
     }
   ],
   "license": "MIT",
@@ -71,6 +74,6 @@
   "scripts": {
     "test": "bower install && ./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
   },
-  "version": "1.2.1",
+  "version": "1.2.1~0.0.1",
   "main": "dist/typeahead.bundle.js"
 }
