@@ -68,6 +68,13 @@ var Bloodhound = (function() {
       }
     },
 
+    __ttAdapterAll: function ttAdapterAll() {
+        var that = this;
+        return function () {
+          return that.index.all();
+        }
+    },
+
     // ### private
 
     _loadPrefetch: function loadPrefetch() {

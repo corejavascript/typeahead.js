@@ -188,6 +188,13 @@
       });
 
       return this;
+    },
+
+    showAllSuggetions: function showAllSuggetions() {
+        ttEach(this, function(t) {
+            t.showAllSuggetions();
+        });
+        return this;
     }
   };
 

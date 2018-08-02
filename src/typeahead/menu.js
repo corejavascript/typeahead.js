@@ -216,6 +216,14 @@ var Menu = (function() {
       _.each(this.datasets, destroyDataset);
 
       function destroyDataset(dataset) { dataset.destroy(); }
+    },
+
+    showAllSuggetions: function showAllSuggetions() {
+        _.each(this.datasets, showAllSuggetions);
+        return true;
+        function showAllSuggetions(dataset) {
+            dataset.showAllSuggetions();
+        }
     }
   });
 

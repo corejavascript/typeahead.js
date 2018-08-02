@@ -436,6 +436,11 @@ var Typeahead = (function() {
     destroy: function destroy() {
       this.input.destroy();
       this.menu.destroy();
+    },
+
+    showAllSuggetions: function showAllSuggetions() {
+        this.menu.showAllSuggetions();
+        return this;
     }
   });
 

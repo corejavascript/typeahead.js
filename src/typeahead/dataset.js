@@ -51,6 +51,7 @@ var Dataset = (function() {
     // use duck typing to see if source is a bloodhound instance by checking
     // for the __ttAdapter property; otherwise assume it is a function
     this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
+    this.sourceAll = o.source.__ttAdapterAll();
 
     // if the async option is undefined, inspect the source signature as
     // a hint to figuring out of the source will return async suggestions
@@ -279,6 +280,11 @@ var Dataset = (function() {
           that.async && that.trigger('asyncReceived', query, that.name);
         }
       }
+    },
+
+    showAllSuggetions: function showAllSuggetions() {
+        this._empty();
+        this._overwrite('', this.sourceAll());
     },
 
     // cancel function gets set in #update
