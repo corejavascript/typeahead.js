@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 1.2.1~0.0.1
+ * typeahead.js 1.2.1+0.0.3
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2018 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -159,7 +159,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "1.2.1~0.0.1";
+    var VERSION = "1.2.1+0.0.3";
     var tokenizers = function() {
         "use strict";
         return {
@@ -1824,7 +1824,7 @@
                     }
                 }
             },
-            showAllSuggetions: function showAllSuggetions() {
+            showAllSuggestions: function showAllSuggestions() {
                 this._empty();
                 this._overwrite("", this.sourceAll());
             },
@@ -2009,11 +2009,11 @@
                     dataset.destroy();
                 }
             },
-            showAllSuggetions: function showAllSuggetions() {
-                _.each(this.datasets, showAllSuggetions);
+            showAllSuggestions: function showAllSuggestions() {
+                _.each(this.datasets, showAllSuggestions);
                 return true;
-                function showAllSuggetions(dataset) {
-                    dataset.showAllSuggetions();
+                function showAllSuggestions(dataset) {
+                    dataset.showAllSuggestions();
                 }
             }
         });
@@ -2389,8 +2389,8 @@
                 this.input.destroy();
                 this.menu.destroy();
             },
-            showAllSuggetions: function showAllSuggetions() {
-                this.menu.showAllSuggetions();
+            showAllSuggestions: function showAllSuggestions() {
+                this.menu.showAllSuggestions();
                 return this;
             }
         });
@@ -2567,9 +2567,9 @@
                 });
                 return this;
             },
-            showAllSuggetions: function showAllSuggetions() {
+            showAllSuggestions: function showAllSuggestions() {
                 ttEach(this, function(t) {
-                    t.showAllSuggetions();
+                    t.showAllSuggestions();
                 });
                 return this;
             }
