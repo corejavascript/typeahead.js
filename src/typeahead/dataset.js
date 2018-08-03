@@ -282,7 +282,7 @@ var Dataset = (function() {
       }
     },
 
-    showAllSuggetions: function showAllSuggetions() {
+    showAllSuggestions: function showAllSuggestions() {
         this._empty();
         this._overwrite('', this.sourceAll());
     },

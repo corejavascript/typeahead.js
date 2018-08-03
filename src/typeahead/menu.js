@@ -218,11 +218,11 @@ var Menu = (function() {
       function destroyDataset(dataset) { dataset.destroy(); }
     },
 
-    showAllSuggetions: function showAllSuggetions() {
-        _.each(this.datasets, showAllSuggetions);
+    showAllSuggestions: function showAllSuggestions() {
+        _.each(this.datasets, showAllSuggestions);
         return true;
-        function showAllSuggetions(dataset) {
-            dataset.showAllSuggetions();
+        function showAllSuggestions(dataset) {
+            dataset.showAllSuggestions();
         }
     }
   });

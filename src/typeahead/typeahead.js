@@ -438,8 +438,8 @@ var Typeahead = (function() {
       this.menu.destroy();
     },
 
-    showAllSuggetions: function showAllSuggetions() {
-        this.menu.showAllSuggetions();
+    showAllSuggestions: function showAllSuggestions() {
+        this.menu.showAllSuggestions();
         return this;
     }
   });

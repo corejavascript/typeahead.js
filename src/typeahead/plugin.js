@@ -190,9 +190,9 @@
       return this;
     },
 
-    showAllSuggetions: function showAllSuggetions() {
+    showAllSuggestions: function showAllSuggestions() {
         ttEach(this, function(t) {
-            t.showAllSuggetions();
+            t.showAllSuggestions();
         });
         return this;
     }
