@@ -1,17 +1,20 @@
 {
-    "name": "twitter/typeahead.js",
+    "name": "corejavascript/typeahead.js",
     "description": "fast and fully-featured autocomplete library",
     "keywords": ["typeahead", "autocomplete"],
-    "homepage": "http://twitter.github.com/typeahead.js",
+    "homepage": "https://typeahead.js.org/",
     "authors": [
         {
             "name": "Twitter Inc.",
             "homepage": "https://twitter.com/twitteross"
+        },
+        {
+            "name": "Jake Harding",
+            "homepage": "https://github.com/jharding"
         }
     ],
     "support": {
-        "issues": "https://github.com/twitter/typeahead.js/issues"
+        "issues": "https://github.com/corejavascript/typeahead.js/issues"
     },
-    "author": "Twitter Inc.",
     "license": "MIT"
 }
