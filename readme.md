@@ -28,7 +28,7 @@ How you acquire typeahead.js is up to you:
 * [Download zipball of latest release](https://github.com/corejavascript/typeahead.js/archive/master.zip)
 
 * Download the latest dist files individually:
-  * [bloodhound.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/bloodhound.jcorejavascript/typeahead.jss) (standalone suggestion engine)
+  * [bloodhound.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/bloodhound.js) (standalone suggestion engine)
   * [typeahead.jquery.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.jquery.js) (standalone UI view)
   * [typeahead.bundle.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.bundle.js) (*bloodhound.js* + *typeahead.jquery.js*)
   * [typeahead.bundle.min.js](https://github.com/corejavascript/typeahead.js/raw/master/dist/typeahead.bundle.min.js)
