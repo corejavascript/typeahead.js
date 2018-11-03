@@ -72,27 +72,19 @@ var Bloodhound = (function() {
 
     _loadPrefetch: function loadPrefetch() {
       var that = this, deferred, serialized;
-
-      deferred = $.Deferred();
-
+      deferred = Deferred();
       if (!this.prefetch) {
         deferred.resolve();
-      }
-
-      else if (serialized = this.prefetch.fromCache()) {
+      } else if (serialized = this.prefetch.fromCache()) {
         this.index.bootstrap(serialized);
         deferred.resolve();
-      }
-
-      else {
+      } else {
         this.prefetch.fromNetwork(done);
       }
-
       return deferred.promise();
 
       function done(err, data) {
         if (err) { return deferred.reject(); }
-
         that.add(data);
         that.prefetch.store(that.index.serialize());
         deferred.resolve();
@@ -101,13 +93,10 @@ var Bloodhound = (function() {
 
     _initialize: function initialize() {
       var that = this, deferred;
-
       // in case this is a reinitialization, clear previous data
       this.clear();
-
       (this.initPromise = this._loadPrefetch())
       .done(addLocalToIndex); // local must be added to index after prefetch
-
       return this.initPromise;
 
       function addLocalToIndex() { that.add(that.local); }

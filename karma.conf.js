@@ -22,6 +22,7 @@ module.exports = function(config) {
       './node_modules/phantomjs-polyfill/bind-polyfill.js',
       'src/common/utils.js',
       'src/bloodhound/version.js',
+      'src/bloodhound/deferred.js',
       'src/bloodhound/tokenizers.js',
       'src/bloodhound/lru_cache.js',
       'src/bloodhound/persistent_storage.js',

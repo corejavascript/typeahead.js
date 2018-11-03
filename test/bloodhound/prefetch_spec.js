@@ -9,7 +9,7 @@ describe('Prefetch', function() {
       cacheKey: 'cachekey',
       prepare: function(x) { return x; },
       transform: function(x) { return x; },
-      transport: $.ajax
+      transport: _.ajax
     }, o || {}));
   }
 
@@ -97,7 +97,7 @@ describe('Prefetch', function() {
       var spy;
 
       spy = jasmine.createSpy();
-      spyOn(this.prefetch, 'transport').andReturn($.Deferred());
+      spyOn(this.prefetch, 'transport').andReturn(Deferred());
 
       this.prefetch.fromNetwork(spy);
 
@@ -113,7 +113,7 @@ describe('Prefetch', function() {
 
       spy = jasmine.createSpy();
       spyOn(this.prefetch, 'prepare').andReturn({ foo: 'bar' });
-      spyOn(this.prefetch, 'transport').andReturn($.Deferred());
+      spyOn(this.prefetch, 'transport').andReturn(Deferred());
 
       this.prefetch.fromNetwork(spy);
 
@@ -129,7 +129,7 @@ describe('Prefetch', function() {
 
       spy = jasmine.createSpy();
       spyOn(this.prefetch, 'transport')
-      .andReturn($.Deferred().resolve({ foo: 'bar' }));
+      .andReturn(Deferred().resolve({ foo: 'bar' }));
 
       this.prefetch.fromNetwork(spy);
 
@@ -141,7 +141,7 @@ describe('Prefetch', function() {
 
       spy = jasmine.createSpy();
       spyOn(this.prefetch, 'transport')
-      .andReturn($.Deferred().resolve({ foo: 'bar' }));
+      .andReturn(Deferred().resolve({ foo: 'bar' }));
 
       this.prefetch.fromNetwork(spy);
 
@@ -152,7 +152,7 @@ describe('Prefetch', function() {
       var spy;
 
       spy = jasmine.createSpy();
-      spyOn(this.prefetch, 'transport').andReturn($.Deferred().reject());
+      spyOn(this.prefetch, 'transport').andReturn(Deferred().reject());
 
       this.prefetch.fromNetwork(spy);
 

@@ -1,15 +1,16 @@
 /*!
- * typeahead.js 1.2.0
+ * typeahead.js 1.2.1
  * https://github.com/twitter/typeahead.js
  * Copyright 2013-2017 Twitter, Inc. and other contributors; Licensed MIT
  */
+
 
 (function(root, factory) {
     if (typeof define === "function" && define.amd) {
         define([ "jquery" ], function(a0) {
             return factory(a0);
         });
-    } else if (typeof exports === "object") {
+    } else if (typeof module === "object" && module.exports) {
         module.exports = factory(require("jquery"));
     } else {
         factory(root["jQuery"]);
@@ -33,9 +34,24 @@
             isNumber: function(obj) {
                 return typeof obj === "number";
             },
-            isArray: $.isArray,
-            isFunction: $.isFunction,
-            isObject: $.isPlainObject,
+            isArray: function(obj) {
+                return Object.prototype.toString.call(obj) === "[object Array]";
+            },
+            isFunction: function(obj) {
+                return typeof obj === "function";
+            },
+            isObject: function(obj) {
+                var proto, Ctor, hasOwn = {}.hasOwnProperty;
+                if (!obj || {}.toString.call(obj) !== "[object Object]") {
+                    return false;
+                }
+                proto = Object.getPrototypeOf(obj);
+                if (!proto) {
+                    return true;
+                }
+                Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
+                return typeof Ctor === "function" && hasOwn.toString.call(Ctor) === hasOwn.toString.call(Object);
+            },
             isUndefined: function(obj) {
                 return typeof obj === "undefined";
             },
@@ -48,21 +64,81 @@
             toStr: function toStr(s) {
                 return _.isUndefined(s) || s === null ? "" : s + "";
             },
-            bind: $.proxy,
-            each: function(collection, cb) {
-                $.each(collection, reverseArgs);
-                function reverseArgs(index, value) {
-                    return cb(value, index);
+            bind: function(fn, context) {
+                var tmp, args, proxy;
+                if (typeof context === "string") {
+                    tmp = fn[context];
+                    context = fn;
+                    fn = tmp;
                 }
+                if (!_.isFunction(fn)) {
+                    return undefined;
+                }
+                args = [].slice.call(arguments, 2);
+                proxy = function() {
+                    return fn.apply(context || _, args.concat([].slice.call(arguments)));
+                };
+                proxy.guid = fn.guid = fn.guid || _.guid();
+                return proxy;
             },
-            map: $.map,
-            filter: $.grep,
+            each: function(collection, cb) {
+                (function(obj, callback) {
+                    var length, i = 0;
+                    if (_.isArray(obj)) {
+                        length = obj.length;
+                        for (;i < length; i++) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    } else {
+                        for (i in obj) {
+                            if (callback.call(obj[i], i, obj[i]) === false) {
+                                break;
+                            }
+                        }
+                    }
+                    return obj;
+                })(collection, function(index, value) {
+                    return cb(value, index);
+                });
+            },
+            map: function(elems, callback, arg) {
+                var length, value, i = 0, ret = [];
+                if (_.isArray(elems)) {
+                    length = elems.length;
+                    for (;i < length; i++) {
+                        value = callback(elems[i], i, arg);
+                        if (value != null) {
+                            ret.push(value);
+                        }
+                    }
+                } else {
+                    for (i in elems) {
+                        value = callback(elems[i], i, arg);
+                        if (value != null) {
+                            ret.push(value);
+                        }
+                    }
+                }
+                return [].concat.apply([], ret);
+            },
+            filter: function(elems, callback, invert) {
+                var callbackInverse, matches = [], i = 0, length = elems.length, callbackExpect = !invert;
+                for (;i < length; i++) {
+                    callbackInverse = !callback(elems[i], i);
+                    if (callbackInverse !== callbackExpect) {
+                        matches.push(elems[i]);
+                    }
+                }
+                return matches;
+            },
             every: function(obj, test) {
                 var result = true;
                 if (!obj) {
                     return result;
                 }
-                $.each(obj, function(key, val) {
+                _.each(obj, function(val, key) {
                     if (!(result = test.call(null, val, key, obj))) {
                         return false;
                     }
@@ -74,19 +150,56 @@
                 if (!obj) {
                     return result;
                 }
-                $.each(obj, function(key, val) {
+                _.each(obj, function(val, key) {
                     if (result = test.call(null, val, key, obj)) {
                         return false;
                     }
                 });
                 return !!result;
             },
-            mixin: $.extend,
+            mixin: function() {
+                var options, name, src, copy, copyIsArray, clone, target = arguments[0] || {}, i = 1, length = arguments.length, deep = false;
+                if (typeof target === "boolean") {
+                    deep = target;
+                    target = arguments[i] || {};
+                    i++;
+                }
+                if (typeof target !== "object" && !_.isFunction(target)) {
+                    target = {};
+                }
+                if (i === length) {
+                    target = _;
+                    i--;
+                }
+                for (;i < length; i++) {
+                    if ((options = arguments[i]) != null) {
+                        for (name in options) {
+                            src = target[name];
+                            copy = options[name];
+                            if (target === copy) {
+                                continue;
+                            }
+                            if (deep && copy && (_.isObject(copy) || (copyIsArray = _.isArray(copy)))) {
+                                if (copyIsArray) {
+                                    copyIsArray = false;
+                                    clone = src && _.isArray(src) ? src : [];
+                                } else {
+                                    clone = src && _.isObject(src) ? src : {};
+                                }
+                                target[name] = _.mixin(deep, clone, copy);
+                            } else if (copy !== undefined) {
+                                target[name] = copy;
+                            }
+                        }
+                    }
+                }
+                return target;
+            },
             identity: function(x) {
                 return x;
             },
             clone: function(obj) {
-                return $.extend(true, {}, obj);
+                return _.mixin(true, {}, obj);
             },
             getIdGenerator: function() {
                 var counter = 0;
@@ -95,7 +208,7 @@
                 };
             },
             templatify: function templatify(obj) {
-                return $.isFunction(obj) ? obj : template;
+                return _.isFunction(obj) ? obj : template;
                 function template() {
                     return String(obj);
                 }
@@ -147,6 +260,81 @@
             },
             stringify: function(val) {
                 return _.isString(val) ? val : JSON.stringify(val);
+            },
+            ajax: function(opts, onSuccess, onFailure) {
+                var url;
+                if (_.isObject(opts)) {
+                    url = opts.url;
+                } else {
+                    url = opts;
+                    opts = {};
+                }
+                var deferred = Deferred();
+                (function(onSuccess, onFailure) {
+                    var req = new XMLHttpRequest();
+                    req.open(opts.type || "GET", url);
+                    req.responseType = opts.responseType || opts.dataType || "json";
+                    opts.headers && function(req, headers) {
+                        for (var key in headers) {
+                            req.setRequestHeader(key, headers[key]);
+                        }
+                    }(req, opts.headers);
+                    opts.listeners && function(req, listeners) {
+                        for (var key in listeners) {
+                            req.addEventListener(key, listeners[key], false);
+                        }
+                    }(req, opts.listeners);
+                    req.onload = function() {
+                        if (req.status == 200) {
+                            onSuccess(req.response);
+                        } else {
+                            onFailure(req.statusText);
+                        }
+                    };
+                    req.onerror = function() {
+                        onFailure("Network Error");
+                    };
+                    req.send();
+                    return req;
+                })(function(resp) {
+                    _.defer(function() {
+                        onSuccess(resp);
+                        deferred.resolve(resp);
+                    });
+                }, function(err) {
+                    _.defer(function() {
+                        onFailure(err);
+                        deferred.reject(err);
+                    });
+                });
+                return deferred;
+            },
+            param: function(a) {
+                var prefix, s = [], buildParams = function(prefix, obj, add) {
+                    var name;
+                    if (_.isArray(obj)) {
+                        _.each(obj, function(v, i) {
+                            if (/\[\]$/.test(prefix)) {
+                                add(prefix, v);
+                            } else {
+                                buildParams(prefix + "[" + (typeof v === "object" && v != null ? i : "") + "]", v, add);
+                            }
+                        });
+                    } else if (_.type(obj) === "object") {
+                        for (name in obj) {
+                            buildParams(prefix + "[" + name + "]", obj[name], add);
+                        }
+                    } else {
+                        add(prefix, obj);
+                    }
+                }, add = function(key, valueOrFunction) {
+                    var value = _.isFunction(valueOrFunction) ? valueOrFunction() : valueOrFunction;
+                    s[s.length] = encodeURIComponent(key) + "=" + encodeURIComponent(value == null ? "" : value);
+                };
+                for (prefix in a) {
+                    buildParams(prefix, a[prefix], add);
+                }
+                return s.join("&");
             },
             guid: function() {
                 function _p8(s) {
