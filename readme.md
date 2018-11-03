@@ -23,6 +23,8 @@ How you acquire typeahead.js is up to you:
 
 * Install with [npm](https://www.npmjs.com): `$ npm install corejs-typeahead`
 
+* Install with [composer](https://getcomposer.org/): `$ composer require corejavascript/typeahead.js`
+
 * [Download zipball of latest release](https://github.com/corejavascript/typeahead.js/archive/master.zip)
 
 * Download the latest dist files individually:
