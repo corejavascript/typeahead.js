@@ -41,6 +41,8 @@ var Typeahead = (function() {
 
     this.autoselect = !!o.autoselect;
 
+    this.tabAutocomplete = o.tabAutocomplete !== false;
+
     // activate the typeahead on init if the input has focus
     this.active = false;
     this.input.hasFocus() && this.activate();
@@ -174,7 +176,7 @@ var Typeahead = (function() {
             $e.preventDefault();
             $e.stopPropagation();
         }
-      } else if(this.autoselect) {
+      } else if (this.autoselect) {
         if (this.select(this.menu.getTopSelectable())) {
             $e.preventDefault();
             $e.stopPropagation();
@@ -187,9 +189,7 @@ var Typeahead = (function() {
 
       if ($selectable = this.menu.getActiveSelectable()) {
         this.select($selectable) && $e.preventDefault();
-      }
-
-      else if ($selectable = this.menu.getTopSelectable()) {
+      } else if (this.tabAutocomplete && ($selectable = this.menu.getTopSelectable())) {
         this.autocomplete($selectable) && $e.preventDefault();
       }
     },

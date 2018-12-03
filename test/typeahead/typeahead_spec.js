@@ -476,16 +476,33 @@ describe('Typeahead', function() {
         expect(payload.preventDefault).not.toHaveBeenCalled();
       });
 
-      it('should autocomplete to top suggestion', function() {
-        var $el;
+      it('should autocomplete to top suggestion on default (option tabAutocomplete not set)', function() {
+         var $el;
+         $el = $('<foo>');
+         spyOn(this.view, 'autocomplete');
+         this.menu.getTopSelectable.andReturn($el);
+         this.input.trigger(eventName, payload);
+         expect(this.view.autocomplete).toHaveBeenCalledWith($el);
+      });
 
-        $el = $('<foo>');
-        spyOn(this.view, 'autocomplete');
-        this.menu.getTopSelectable.andReturn($el);
+      it('should autocomplete to top suggestion if option tabAutocomplete is true)', function() {
+         this.view.tabAutocomplete = true;
+         var $el;
+         $el = $('<foo>');
+         spyOn(this.view, 'autocomplete');
+         this.menu.getTopSelectable.andReturn($el);
+         this.input.trigger(eventName, payload);
+         expect(this.view.autocomplete).toHaveBeenCalledWith($el);
+      });
 
-        this.input.trigger(eventName, payload);
-
-        expect(this.view.autocomplete).toHaveBeenCalledWith($el);
+      it('should not autocomplete to top suggestion if option tabAutocomplete is false', function() {
+         this.view.tabAutocomplete = false;
+         var $el;
+         $el = $('<foo>');
+         spyOn(this.view, 'autocomplete');
+         this.menu.getTopSelectable.andReturn($el);
+         this.input.trigger(eventName, payload);
+         expect(this.view.autocomplete).not.toHaveBeenCalledWith($el);
       });
 
       it('should prevent default behavior of DOM event if autocompletion succeeds', function() {
