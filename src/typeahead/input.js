@@ -66,7 +66,7 @@ var Input = (function() {
         _.noop;
     }
 
-    this.onSync('cursorchange', this._updateDescendent.bind(this));
+    this.onSync('cursorchange', this._updateDescendent);
   }
 
   // static methods
