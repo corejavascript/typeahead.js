@@ -23,6 +23,7 @@ var Input = (function() {
   // -----------
 
   function Input(o, www) {
+    var id;
     o = o || {};
 
     if (!o.input) {
@@ -33,16 +34,18 @@ var Input = (function() {
 
     this.$hint = $(o.hint);
     this.$input = $(o.input);
+    this.$menu = $(o.menu);
+
+    // this id is used for aria-owns
+    id = this.$input.attr('id') || _.guid();
+
+    this.$menu.attr('id', id + '_listbox');
 
     this.$input.attr({
-      'aria-activedescendant': '',
-      'aria-owns': this.$input.attr('id') + '_listbox',
+      'aria-owns': id + '_listbox',
       role: 'combobox',
-      'aria-readonly': 'true',
       'aria-autocomplete': 'list'
     });
-
-    $(www.menu).attr('id', this.$input.attr('id') + '_listbox');
 
     // the query defaults to whatever the value of the input is
     // on initialization, it'll most likely be an empty string
@@ -59,14 +62,11 @@ var Input = (function() {
 
     // if no hint, noop all the hint related functions
     if (this.$hint.length === 0) {
-      this.setHint =
-      this.getHint =
-      this.clearHint =
-      this.clearHintIfInvalid = _.noop;
+      this.setHint = this.getHint = this.clearHint = this.clearHintIfInvalid =
+        _.noop;
     }
 
-    this.onSync('cursorchange', this._updateDescendent);
-
+    this.onSync('cursorchange', this._updateDescendent.bind(this));
   }
 
   // static methods
@@ -74,14 +74,15 @@ var Input = (function() {
 
   Input.normalizeQuery = function(str) {
     // strips leading whitespace and condenses all whitespace
-    return (_.toStr(str)).replace(/^\s*/g, '').replace(/\s{2,}/g, ' ');
+    return _.toStr(str)
+      .replace(/^\s*/g, '')
+      .replace(/\s{2,}/g, ' ');
   };
 
   // instance methods
   // ----------------
 
   _.mixin(Input.prototype, EventEmitter, {
-
     // ### event handlers
 
     _onBlur: function onBlur() {
@@ -157,16 +158,15 @@ var Input = (function() {
       var areEquivalent, hasDifferentWhitespace;
 
       areEquivalent = areQueriesEquivalent(val, this.query);
-      hasDifferentWhitespace = areEquivalent ?
-        this.query.length !== val.length : false;
+      hasDifferentWhitespace = areEquivalent
+        ? this.query.length !== val.length
+        : false;
 
       this.query = val;
 
       if (!silent && !areEquivalent) {
         this.trigger('queryChanged', this.query);
-      }
-
-      else if (!silent && hasDifferentWhitespace) {
+      } else if (!silent && hasDifferentWhitespace) {
         this.trigger('whitespaceChanged', this.query);
       }
     },
@@ -178,7 +178,11 @@ var Input = (function() {
     // ### public
 
     bind: function() {
-      var that = this, onBlur, onFocus, onKeydown, onInput;
+      var that = this,
+        onBlur,
+        onFocus,
+        onKeydown,
+        onInput;
 
       // bound functions
       onBlur = _.bind(this._onBlur, this);
@@ -187,20 +191,20 @@ var Input = (function() {
       onInput = _.bind(this._onInput, this);
 
       this.$input
-      .on('blur.tt', onBlur)
-      .on('focus.tt', onFocus)
-      .on('keydown.tt', onKeydown);
+        .on('blur.tt', onBlur)
+        .on('focus.tt', onFocus)
+        .on('keydown.tt', onKeydown);
 
       // ie8 don't support the input event
       // ie9 doesn't fire the input event when characters are removed
       if (!_.isMsie() || _.isMsie() > 9) {
         this.$input.on('input.tt', onInput);
-      }
-
-      else {
+      } else {
         this.$input.on('keydown.tt keypress.tt cut.tt paste.tt', function($e) {
           // if a special key triggered this, ignore it
-          if (specialKeyCodeMap[$e.which || $e.keyCode]) { return; }
+          if (specialKeyCodeMap[$e.which || $e.keyCode]) {
+            return;
+          }
 
           // give the browser a chance to update the value of the input
           // before checking to see if the query changed
@@ -293,10 +297,8 @@ var Input = (function() {
       selectionStart = this.$input[0].selectionStart;
 
       if (_.isNumber(selectionStart)) {
-       return selectionStart === valueLength;
-      }
-
-      else if (document.selection) {
+        return selectionStart === valueLength;
+      } else if (document.selection) {
         // NOTE: this won't work unless the input has focus, the good news
         // is this code should only get called when the input has focus
         range = document.selection.createRange();
@@ -325,25 +327,25 @@ var Input = (function() {
 
   function buildOverflowHelper($input) {
     return $('<pre aria-hidden="true"></pre>')
-    .css({
-      // position helper off-screen
-      position: 'absolute',
-      visibility: 'hidden',
-      // avoid line breaks and whitespace collapsing
-      whiteSpace: 'pre',
-      // use same font css as input to calculate accurate width
-      fontFamily: $input.css('font-family'),
-      fontSize: $input.css('font-size'),
-      fontStyle: $input.css('font-style'),
-      fontVariant: $input.css('font-variant'),
-      fontWeight: $input.css('font-weight'),
-      wordSpacing: $input.css('word-spacing'),
-      letterSpacing: $input.css('letter-spacing'),
-      textIndent: $input.css('text-indent'),
-      textRendering: $input.css('text-rendering'),
-      textTransform: $input.css('text-transform')
-    })
-    .insertAfter($input);
+      .css({
+        // position helper off-screen
+        position: 'absolute',
+        visibility: 'hidden',
+        // avoid line breaks and whitespace collapsing
+        whiteSpace: 'pre',
+        // use same font css as input to calculate accurate width
+        fontFamily: $input.css('font-family'),
+        fontSize: $input.css('font-size'),
+        fontStyle: $input.css('font-style'),
+        fontVariant: $input.css('font-variant'),
+        fontWeight: $input.css('font-weight'),
+        wordSpacing: $input.css('word-spacing'),
+        letterSpacing: $input.css('letter-spacing'),
+        textIndent: $input.css('text-indent'),
+        textRendering: $input.css('text-rendering'),
+        textTransform: $input.css('text-transform')
+      })
+      .insertAfter($input);
   }
 
   function areQueriesEquivalent(a, b) {
