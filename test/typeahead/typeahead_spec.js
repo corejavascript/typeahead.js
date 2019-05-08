@@ -17,14 +17,17 @@ describe('Typeahead', function() {
 
     testData = { dataset: 'bar', val: 'foo bar', obj: 'fiz' };
 
+	
     this.view = new Typeahead({
       input: new Input(),
       menu: new Menu(),
-      eventBus: new EventBus({ el: this.$input })
+      eventBus: new EventBus({ el: this.$input }),
+	  autoselect: false
     }, www);
 
     this.input = this.view.input;
     this.menu = this.view.menu;
+	this.autoselect = this.view.autoselect;
   });
 
   describe('on selectableClicked', function() {
@@ -476,7 +479,7 @@ describe('Typeahead', function() {
         expect(payload.preventDefault).not.toHaveBeenCalled();
       });
 
-      it('should autocomplete to top suggestion', function() {
+      it('should autocomplete to top suggestion when autoselect', function() {
         var $el;
 
         $el = $('<foo>');
@@ -485,10 +488,12 @@ describe('Typeahead', function() {
 
         this.input.trigger(eventName, payload);
 
-        expect(this.view.autocomplete).toHaveBeenCalledWith($el);
+		if(this.autoselect){
+			expect(this.view.autocomplete).toHaveBeenCalledWith($el);
+		}
       });
 
-      it('should prevent default behavior of DOM event if autocompletion succeeds', function() {
+      it('should prevent default behavior of DOM event if autocompletion succeeds when autoselect', function() {
         var $el;
 
         $el = $('<foo>');
@@ -497,7 +502,9 @@ describe('Typeahead', function() {
 
         this.input.trigger(eventName, payload);
 
-        expect(payload.preventDefault).toHaveBeenCalled();
+		if(this.autoselect) {
+			expect(payload.preventDefault).toHaveBeenCalled();
+		}
       });
 
       it('should not prevent default behavior of DOM event if autocompletion fails', function() {
