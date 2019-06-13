@@ -44,7 +44,8 @@ var Input = (function() {
     this.$input.attr({
       'aria-owns': id + '_listbox',
       role: 'combobox',
-      'aria-autocomplete': 'list'
+      'aria-autocomplete': 'list',
+      'aria-expanded': false
     });
 
     // the query defaults to whatever the value of the input is
