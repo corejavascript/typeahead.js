@@ -1,5 +1,5 @@
 {
-  "name": "corejs-typeahead",
+  "name": "@eduka/corejs-typeahead",
   "description": "fast and fully-featured autocomplete library",
   "keywords": [
     "typeahead",
