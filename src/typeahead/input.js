@@ -41,6 +41,10 @@ var Input = (function() {
 
     this.$menu.attr('id', id + '_listbox');
 
+    this.$hint.attr({
+      'aria-hidden': true
+    });
+
     this.$input.attr({
       'aria-owns': id + '_listbox',
       role: 'combobox',
