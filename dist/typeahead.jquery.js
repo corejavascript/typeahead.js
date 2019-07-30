@@ -1,5 +1,9 @@
 /*!
+<<<<<<< HEAD
  * typeahead.js 1.3.0
+=======
+ * typeahead.js 1.2.3
+>>>>>>> 1.2.3
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2019 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -490,6 +494,15 @@
             www.mixin(this);
             this.$hint = $(o.hint);
             this.$input = $(o.input);
+<<<<<<< HEAD
+=======
+            this.$menu = $(o.menu);
+            id = this.$input.attr("id") || _.guid();
+            this.$menu.attr("id", id + "_listbox");
+            this.$hint.attr({
+                "aria-hidden": true
+            });
+>>>>>>> 1.2.3
             this.$input.attr({
                 "aria-activedescendant": "",
                 "aria-owns": this.$input.attr("id") + "_listbox",
