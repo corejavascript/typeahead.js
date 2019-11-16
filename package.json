@@ -69,7 +69,7 @@
     "yiewd": "^0.6.0"
   },
   "scripts": {
-    "test": "bower install && ./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
+    "test": "bower install && node ./node_modules/karma/bin/karma start --single-run --browsers PhantomJS"
   },
   "version": "1.2.1",
   "main": "dist/typeahead.bundle.js"
