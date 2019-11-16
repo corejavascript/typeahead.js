@@ -16,6 +16,7 @@ describe('Typeahead', function() {
     this.$input = $fixture.find('input');
 
     testData = { dataset: 'bar', val: 'foo bar', obj: 'fiz' };
+    testObjectData = { dataset: 'bar', val: { id: 1, name: 'foo bar' }, obj: { id: 1, name: 'foo bar' } };
 
 	
     this.view = new Typeahead({
@@ -1388,6 +1389,14 @@ describe('Typeahead', function() {
 
       this.view.moveCursor(1);
       expect(this.input.setInputValue).toHaveBeenCalledWith(testData.val);
+    });
+
+    it('should not update the input value if moved to object selectable', function() {
+      this.menu.getSelectableData.andReturn(testObjectData);
+      this.menu.selectableRelativeToCursor.andReturn($());
+
+      this.view.moveCursor(1);
+      expect(this.input.setInputValue).not.toHaveBeenCalled();
     });
 
     it('should reset the input value if moved to input', function() {

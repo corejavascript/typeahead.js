@@ -416,7 +416,11 @@ var Typeahead = (function() {
 
         // cursor moved to different selectable
         if (data) {
-          this.input.setInputValue(data.val);
+          // set the input only if data.val is a string
+          // don't want to set it to [Object object]
+          if (typeof data.val === 'string') {
+            this.input.setInputValue(data.val);
+          }
         }
 
         // cursor moved off of selectables, back to input
