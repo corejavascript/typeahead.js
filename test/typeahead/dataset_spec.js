@@ -421,6 +421,33 @@ describe('Dataset', function() {
     });
   });
 
+  it('should apply id attribute when using default suggestion template', function() {
+    this.dataset = new Dataset({
+      source: this.source,
+      node: $('<div>'),
+    }, www);
+
+    this.source.andCallFake(syncMockSuggestions);
+    this.dataset.update('woah');
+
+    expect(this.dataset.$el.find('div[role="option"]')).toHaveAttr('id');
+  });
+
+  it('should apply id attribute when using custom suggestion template', function() {
+    this.dataset = new Dataset({
+      source: this.source,
+      node: $('<div>'),
+      templates: {
+        suggestion: function(c) { return '<p class="search-result"> result' + c.query + '</p>'; }
+      }
+    }, www);
+
+    this.source.andCallFake(syncMockSuggestions);
+    this.dataset.update('woah');
+
+    expect(this.dataset.$el.find('p.search-result')).toHaveAttr('id');
+  });
+
   describe('#clear', function() {
     it('should clear suggestions', function() {
       this.source.andCallFake(syncMockSuggestions);
