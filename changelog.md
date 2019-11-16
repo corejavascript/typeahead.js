@@ -1,6 +1,12 @@
 # Changelog
 
-### 1.2.0 September 25, 2017
+### 1.3.0 November 16, 2019
+* Fix autoselect on tab [#199](https://github.com/corejavascript/typeahead.js/pull/199)
+* On up/down arrow, set the input only if data.val is a string [#184](https://github.com/corejavascript/typeahead.js/pull/184)
+* Apply accessibility attributes to suggestion template [#185](https://github.com/corejavascript/typeahead.js/pull/185)
+
+
+### 1.2.1 September 25, 2017
 * Fix various typos [#137](https://github.com/corejavascript/typeahead.js/pull/137)
 * Add jQuery 3 support [#102](https://github.com/corejavascript/typeahead.js/pull/102)
 * Remove 'required' class from cloned input field [#125](https://github.com/corejavascript/typeahead.js/pull/125)
@@ -9,6 +15,8 @@
 * Fix link in bloodhound docs [#134](https://github.com/corejavascript/typeahead.js/pull/134)
 * Minor change to docs to log object instead of assuming it's a string [#157](https://github.com/corejavascript/typeahead.js/pull/157)
 
+### 1.2.0 September 25, 2017
+(Skipped)
 
 ### 1.1.1 January 12, 2017
 * Fix hiding of .visuallyhidden style (introduced in #104) [#107](https://github.com/corejavascript/typeahead.js/pull/107)

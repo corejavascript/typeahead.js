@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 1.2.1
+ * typeahead.js 1.3.0
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2019 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -897,8 +897,12 @@
                 pending: templates.pending && _.templatify(templates.pending),
                 header: templates.header && _.templatify(templates.header),
                 footer: templates.footer && _.templatify(templates.footer),
-                suggestion: templates.suggestion || suggestionTemplate
+                suggestion: templates.suggestion ? userSuggestionTemplate : suggestionTemplate
             };
+            function userSuggestionTemplate(context) {
+                var template = templates.suggestion;
+                return $(template(context)).attr("id", _.guid());
+            }
             function suggestionTemplate(context) {
                 return $('<div role="option">').attr("id", _.guid()).text(displayFn(context));
             }
@@ -1412,7 +1416,9 @@
                 if (!cancelMove && !this.eventBus.before("cursorchange", suggestion, datasetName)) {
                     this.menu.setCursor($candidate);
                     if (data) {
-                        this.input.setInputValue(data.val);
+                        if (typeof data.val === "string") {
+                            this.input.setInputValue(data.val);
+                        }
                     } else {
                         this.input.resetInputValue();
                         this._updateHint();
