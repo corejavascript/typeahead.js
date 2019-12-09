@@ -322,7 +322,10 @@ var Input = (function() {
 
       // #970
       this.$hint = this.$input = this.$overflowHelper = $('<div>');
-    }
+    },
+    setAriaExpanded: function setAriaExpanded(value) {
+      this.$input.attr('aria-expanded', value);
+    },
   });
 
   return Input;
