@@ -325,7 +325,7 @@ var Input = (function() {
     },
     setAriaExpanded: function setAriaExpanded(value) {
       this.$input.attr('aria-expanded', value);
-    },
+    }
   });
 
   return Input;

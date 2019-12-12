@@ -334,7 +334,7 @@ var Typeahead = (function() {
 
     open: function open() {
       if (!this.isOpen() && !this.eventBus.before('open')) {
-        this.input.setAriaExpanded(false);
+        this.input.setAriaExpanded(true);
         this.menu.open();
         this._updateHint();
         this.eventBus.trigger('open');
