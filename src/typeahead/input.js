@@ -23,6 +23,7 @@ var Input = (function() {
   // -----------
 
   function Input(o, www) {
+    var id;
     o = o || {};
 
     if (!o.input) {
@@ -33,13 +34,22 @@ var Input = (function() {
 
     this.$hint = $(o.hint);
     this.$input = $(o.input);
+    this.$menu = $(o.menu);
+
+    // this id is used for aria-owns
+    id = this.$input.attr('id') || _.guid();
+
+    this.$menu.attr('id', id + '_listbox');
+
+    this.$hint.attr({
+      'aria-hidden': true
+    });
 
     this.$input.attr({
-      'aria-activedescendant': '',
-      'aria-owns': this.$input.attr('id') + '_listbox',
+      'aria-owns': id + '_listbox',
       role: 'combobox',
-      'aria-readonly': 'true',
-      'aria-autocomplete': 'list'
+      'aria-autocomplete': 'list',
+      'aria-expanded': false
     });
 
     $(www.menu).attr('id', this.$input.attr('id') + '_listbox');
@@ -315,6 +325,9 @@ var Input = (function() {
 
       // #970
       this.$hint = this.$input = this.$overflowHelper = $('<div>');
+    },
+    setAriaExpanded: function setAriaExpanded(value) {
+      this.$input.attr('aria-expanded', value);
     }
   });
 
