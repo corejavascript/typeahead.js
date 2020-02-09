@@ -1,7 +1,7 @@
 /*!
- * typeahead.js 1.3.0
+ * typeahead.js 1.3.1
  * https://github.com/corejavascript/typeahead.js
- * Copyright 2013-2019 Twitter, Inc. and other contributors; Licensed MIT
+ * Copyright 2013-2020 Twitter, Inc. and other contributors; Licensed MIT
  */
 
 
@@ -483,6 +483,7 @@
             40: "down"
         };
         function Input(o, www) {
+            var id;
             o = o || {};
             if (!o.input) {
                 $.error("input is missing");
@@ -490,14 +491,18 @@
             www.mixin(this);
             this.$hint = $(o.hint);
             this.$input = $(o.input);
-            this.$input.attr({
-                "aria-activedescendant": "",
-                "aria-owns": this.$input.attr("id") + "_listbox",
-                role: "combobox",
-                "aria-readonly": "true",
-                "aria-autocomplete": "list"
+            this.$menu = $(o.menu);
+            id = this.$input.attr("id") || _.guid();
+            this.$menu.attr("id", id + "_listbox");
+            this.$hint.attr({
+                "aria-hidden": true
             });
-            $(www.menu).attr("id", this.$input.attr("id") + "_listbox");
+            this.$input.attr({
+                "aria-owns": id + "_listbox",
+                role: "combobox",
+                "aria-autocomplete": "list",
+                "aria-expanded": false
+            });
             this.query = this.$input.val();
             this.queryWhenFocused = this.hasFocus() ? this.query : null;
             this.$overflowHelper = buildOverflowHelper(this.$input);
@@ -670,6 +675,9 @@
                 this.$input.off(".tt");
                 this.$overflowHelper.remove();
                 this.$hint = this.$input = this.$overflowHelper = $("<div>");
+            },
+            setAriaExpanded: function setAriaExpanded(value) {
+                this.$input.attr("aria-expanded", value);
             }
         });
         return Input;
@@ -1360,6 +1368,7 @@
             },
             open: function open() {
                 if (!this.isOpen() && !this.eventBus.before("open")) {
+                    this.input.setAriaExpanded(true);
                     this.menu.open();
                     this._updateHint();
                     this.eventBus.trigger("open");
@@ -1368,6 +1377,7 @@
             },
             close: function close() {
                 if (this.isOpen() && !this.eventBus.before("close")) {
+                    this.input.setAriaExpanded(false);
                     this.menu.close();
                     this.input.clearHint();
                     this.input.resetInputValue();
@@ -1486,7 +1496,8 @@
                     });
                     input = new Input({
                         hint: $hint,
-                        input: $input
+                        input: $input,
+                        menu: $menu
                     }, www);
                     menu = new MenuConstructor({
                         node: $menu,
