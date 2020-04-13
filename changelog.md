@@ -1,5 +1,11 @@
 # Changelog
 
+
+
+### 1.3.1 April 12, 2020
+* Update numerous npm dependencies to resolve vulnerability warnings.
+* Fix aria warnings in Chrome lighthouse, make aria spec compliant [#197](https://github.com/corejavascript/typeahead.js/pull/197)
+
 ### 1.3.0 November 16, 2019
 * Fix autoselect on tab [#199](https://github.com/corejavascript/typeahead.js/pull/199)
 * On up/down arrow, set the input only if data.val is a string [#184](https://github.com/corejavascript/typeahead.js/pull/184)
