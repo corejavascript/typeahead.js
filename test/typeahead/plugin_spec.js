@@ -78,7 +78,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     $el = $('.tt-selectable').first();
 
     expect(this.$input.typeahead('select', $el)).toBe(true);
@@ -90,7 +90,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     body = document.body;
 
     expect(this.$input.typeahead('select', body)).toBe(false);
@@ -101,7 +101,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     $el = $('.tt-selectable').first();
 
     expect(this.$input.typeahead('autocomplete', $el)).toBe(true);
@@ -113,7 +113,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     body = document.body;
 
     expect(this.$input.typeahead('autocomplete', body)).toBe(false);
@@ -124,7 +124,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     $el = $('.tt-selectable').first();
 
     expect($el).not.toHaveClass('tt-cursor');
@@ -137,7 +137,7 @@ describe('$plugin', function() {
 
     // activate and set val to render some selectables
     this.$input.typeahead('activate');
-    this.$input.typeahead('val', 'o');
+    this.$input.typeahead('query', 'o');
     body = document.body;
 
     expect(this.$input.typeahead('select', body)).toBe(false);
@@ -150,11 +150,13 @@ describe('$plugin', function() {
     $els = this.$input.add('<div>');
 
     expect($els.typeahead('val')).toBe('foo');
+    expect($els.typeahead('query')).toBe('foo');
   });
 
   it('#val(q) should set query', function() {
     this.$input.typeahead('val', 'foo');
     expect(this.$input.typeahead('val')).toBe('foo');
+    expect(this.$input.typeahead('query')).toBe('foo');
   });
 
   it('#val(q) should coerce null and undefined to empty string', function() {
@@ -163,6 +165,48 @@ describe('$plugin', function() {
 
     this.$input.typeahead('val', undefined);
     expect(this.$input.typeahead('val')).toBe('');
+  });
+
+  it('#val(q) should set query silently', function() {
+    var $el;
+
+    // activate and set val to render some selectables
+    this.$input.typeahead('activate');
+    this.$input.typeahead('val', 'o');
+    expect($('.tt-selectable').length).toBe(0)
+  });
+
+  it('#query() should typeahead value of element', function() {
+    var $els;
+
+    this.$input.typeahead('query', 'foo');
+    $els = this.$input.add('<div>');
+
+    expect($els.typeahead('val')).toBe('foo');
+    expect($els.typeahead('query')).toBe('foo');
+  });
+
+  it('#query(q) should set query', function() {
+    this.$input.typeahead('query', 'foo');
+    expect(this.$input.typeahead('val')).toBe('foo');
+    expect(this.$input.typeahead('query')).toBe('foo');
+  });
+
+  it('#query(q) should coerce null and undefined to empty string', function() {
+    this.$input.typeahead('query', null);
+    expect(this.$input.typeahead('query')).toBe('');
+
+    this.$input.typeahead('query', undefined);
+    expect(this.$input.typeahead('query')).toBe('');
+  });
+
+  it('#query(q) should set query noisily', function() {
+    var $el;
+
+    // activate and set query to render some selectables
+    this.$input.typeahead('activate');
+    this.$input.typeahead('query', 'o');
+    expect($('.tt-selectable').length).toBe(3)
   });
 
   it('#destroy should revert modified attributes', function() {
