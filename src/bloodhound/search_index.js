@@ -103,6 +103,13 @@ var SearchIndex = window.SearchIndex = (function() {
           }
         }
       });
+      
+      if (!query) {
+        matches = [];
+        for (var obj in that.datums) {
+          matches.push(obj);
+        }
+      }
 
       return matches ?
         _.map(unique(matches), function(id) { return that.datums[id]; }) : [];
