@@ -273,9 +273,9 @@ var Dataset = (function() {
         // do not render the suggestions as they've become outdated
         if (!canceled && rendered < that.limit) {
           that.cancel = $.noop;
-          var idx = Math.abs(rendered - that.limit);
-          rendered += idx;
-          that._append(query, suggestions.slice(0, idx));
+          var suggestionsToAdd = suggestions.slice(0, that.limit - rendered);
+          that._append(query, suggestionsToAdd);
+          rendered += suggestionsToAdd.length;
           that.async && that.trigger('asyncReceived', query, that.name);
         }
       }
