@@ -96,8 +96,9 @@ var Typeahead = (function() {
       var $input, $menu;
 
       // these default values are to make testing easier
-      $input = this.input.$input || $('<div>');
-      $menu = this.menu.$node || $('<div>');
+      // #225
+      $input = this.input.$input || $('<span>');
+      $menu = this.menu.$node || $('<span>');
 
       // #705: if there's scrollable overflow, ie doesn't support
       // blur cancellations when the scrollbar is clicked

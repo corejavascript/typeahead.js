@@ -60,6 +60,7 @@ var Dataset = (function() {
 
     this.$el = $(o.node)
     .attr('role', 'presentation')
+    .attr('style', 'display:block')
     .addClass(this.classes.dataset)
     .addClass(this.classes.dataset + '-' + this.name);
   }
@@ -295,8 +296,8 @@ var Dataset = (function() {
     },
 
     destroy: function destroy() {
-      // #970
-      this.$el = $('<div>');
+      // #970 #225
+      this.$el = $('<span>');
     }
   });
 
@@ -328,7 +329,8 @@ var Dataset = (function() {
     }
 
     function suggestionTemplate(context) {
-      return $('<div role="option">').attr('id', _.guid()).text(displayFn(context));
+      //#225
+      return $('<span role="option" style="display:block">').attr('id', _.guid()).text(displayFn(context));
     }
   }
 

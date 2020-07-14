@@ -29,7 +29,8 @@ var Menu = (function() {
 
     function initializeDataset(oDataset) {
       var node = that.$node.find(oDataset.node).first();
-      oDataset.node = node.length ? node : $('<div>').appendTo(that.$node);
+      // #225
+      oDataset.node = node.length ? node : $('<span>').appendTo(that.$node);
 
       return new Dataset(oDataset, www);
     }
@@ -210,8 +211,8 @@ var Menu = (function() {
     destroy: function destroy() {
       this.$node.off('.tt');
 
-      // #970
-      this.$node = $('<div>');
+      // #970 , #225
+      this.$node = $('<span>');
 
       _.each(this.datasets, destroyDataset);
 

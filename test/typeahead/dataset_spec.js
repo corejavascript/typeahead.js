@@ -430,7 +430,8 @@ describe('Dataset', function() {
     this.source.andCallFake(syncMockSuggestions);
     this.dataset.update('woah');
 
-    expect(this.dataset.$el.find('div[role="option"]')).toHaveAttr('id');
+    // #225
+    expect(this.dataset.$el.find('span[role="option"]')).toHaveAttr('id');
   });
 
   it('should apply id attribute when using custom suggestion template', function() {
