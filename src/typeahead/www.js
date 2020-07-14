@@ -47,7 +47,8 @@ var WWW = (function() {
   function buildHtml(c) {
     return {
       wrapper: '<span class="' + c.wrapper + '"></span>',
-      menu: '<div role="listbox" class="' + c.menu + '"></div>'
+      //#225
+      menu: '<span role="listbox" class="' + c.menu + '"></span >'
     };
   }
 
@@ -76,18 +77,23 @@ var WWW = (function() {
       input: {
         position: 'relative',
         verticalAlign: 'top',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        // #225
+        display: 'block'
       },
       inputWithNoHint: {
         position: 'relative',
-        verticalAlign: 'top'
+        verticalAlign: 'top',
+        // #225
+        display: 'block'
       },
       menu: {
         position: 'absolute',
         top: '100%',
         left: '0',
         zIndex: '100',
-        display: 'none'
+        // #225
+        display: 'block'
       },
       ltr: {
         left: '0',
