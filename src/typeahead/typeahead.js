@@ -188,10 +188,11 @@ var Typeahead = (function() {
       if ($selectable = this.menu.getActiveSelectable()) {
         this.select($selectable) && $e.preventDefault();
       }
-
-      else if ($selectable = this.menu.getTopSelectable()) {
-        this.autocomplete($selectable) && $e.preventDefault();
-      }
+	  else if(this.autoselect) {
+		if ($selectable = this.menu.getTopSelectable()) {
+			this.autocomplete($selectable) && $e.preventDefault();
+		}
+	  }
     },
 
     _onEscKeyed: function onEscKeyed() {
@@ -333,6 +334,7 @@ var Typeahead = (function() {
 
     open: function open() {
       if (!this.isOpen() && !this.eventBus.before('open')) {
+        this.input.setAriaExpanded(true);
         this.menu.open();
         this._updateHint();
         this.eventBus.trigger('open');
@@ -343,6 +345,7 @@ var Typeahead = (function() {
 
     close: function close() {
       if (this.isOpen() && !this.eventBus.before('close')) {
+        this.input.setAriaExpanded(false);
         this.menu.close();
         this.input.clearHint();
         this.input.resetInputValue();
@@ -415,7 +418,11 @@ var Typeahead = (function() {
 
         // cursor moved to different selectable
         if (data) {
-          this.input.setInputValue(data.val);
+          // set the input only if data.val is a string
+          // don't want to set it to [Object object]
+          if (typeof data.val === 'string') {
+            this.input.setInputValue(data.val);
+          }
         }
 
         // cursor moved off of selectables, back to input
