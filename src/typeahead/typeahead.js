@@ -33,7 +33,8 @@ var Typeahead = (function() {
 
     this.eventBus = o.eventBus;
     this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
-
+    this.keepOpen = !!o.keepOpen;
+    
     this.input = o.input;
     this.menu = o.menu;
 
@@ -370,7 +371,10 @@ var Typeahead = (function() {
         this.input.setQuery(data.val, true);
 
         this.eventBus.trigger('select', data.obj, data.dataset);
-        this.close();
+        
+        if (!this.keepOpen) {
+          this.close();
+        }
 
         // return true if selection succeeded
         return true;

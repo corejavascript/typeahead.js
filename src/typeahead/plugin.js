@@ -85,7 +85,8 @@
           menu: menu,
           eventBus: eventBus,
           minLength: o.minLength,
-          autoselect: o.autoselect
+          autoselect: o.autoselect,
+          keepOpen: o.keepOpen
         }, www);
 
         $input.data(keys.www, www);
