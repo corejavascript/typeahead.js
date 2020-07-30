@@ -24,7 +24,7 @@ describe('Bloodhound', function() {
       spyOn(this.bloodhound, '_initialize').andCallThrough();
     });
 
-    it('should not initialize if intialize option is false', function() {
+    it('should not initialize if initialize option is false', function() {
       expect(this.bloodhound._initialize).not.toHaveBeenCalled();
     });
 
@@ -38,7 +38,7 @@ describe('Bloodhound', function() {
       expect(this.bloodhound._initialize.callCount).toBe(1);
     });
 
-    it('should reinitialize if reintialize flag is true', function() {
+    it('should reinitialize if reinitialize flag is true', function() {
       var p1, p2;
 
       p1 = this.bloodhound.initialize();
@@ -283,6 +283,57 @@ describe('Bloodhound', function() {
 
       expect(syncSpy).toHaveBeenCalledWith([{ value: 'dog' }]);
       expect(asyncSpy).toHaveBeenCalledWith([
+        { value: 'cat' },
+        { value: 'moose' }
+      ]);
+
+      function fakeGet(o, cb) { cb(fixtures.data.animals); }
+    });
+
+    it('should not add remote data to index if indexRemote is false', function() {
+      this.bloodhound = build({
+        identify: function(d) { return d.value; },
+        remote: '/remote'
+      });
+      this.bloodhound.remote.get.andCallFake(fakeGet);
+
+      spyOn(this.bloodhound, 'add');
+      this.bloodhound.search('dog');
+
+      expect(this.bloodhound.add).not.toHaveBeenCalled();
+
+      function fakeGet(o, cb) { cb(fixtures.data.animals); }
+    });
+
+    it('should add remote data to index if indexRemote is true', function() {
+      this.bloodhound = build({
+        identify: function(d) { return d.value; },
+        indexRemote: true,
+        remote: '/remote'
+      });
+      this.bloodhound.remote.get.andCallFake(fakeGet);
+
+      spyOn(this.bloodhound, 'add');
+      this.bloodhound.search('dog');
+
+      expect(this.bloodhound.add).toHaveBeenCalledWith(fixtures.data.animals);
+
+      function fakeGet(o, cb) { cb(fixtures.data.animals); }
+    });
+
+    it('should not add duplicates from remote to index', function() {
+      this.bloodhound = build({
+        identify: function(d) { return d.value; },
+        indexRemote: true,
+        local: fixtures.data.animals,
+        remote: '/remote'
+      });
+      this.bloodhound.remote.get.andCallFake(fakeGet);
+
+      spyOn(this.bloodhound, 'add');
+      this.bloodhound.search('dog');
+
+      expect(this.bloodhound.add).toHaveBeenCalledWith([
         { value: 'cat' },
         { value: 'moose' }
       ]);

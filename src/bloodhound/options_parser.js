@@ -15,7 +15,9 @@ var oParser = (function() {
       identify: _.stringify,
       datumTokenizer: null,
       queryTokenizer: null,
+      matchAnyQueryToken: false,
       sufficient: 5,
+      indexRemote: false,
       sorter: null,
       local: [],
       prefetch: null,
@@ -129,7 +131,7 @@ var oParser = (function() {
     }
 
     else {
-      prepare = idenityPrepare;
+      prepare = identityPrepare;
     }
 
     return prepare;
@@ -144,7 +146,7 @@ var oParser = (function() {
       return settings;
     }
 
-    function idenityPrepare(query, settings) {
+    function identityPrepare(query, settings) {
       return settings;
     }
   }

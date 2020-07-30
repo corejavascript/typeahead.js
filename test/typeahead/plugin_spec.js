@@ -16,7 +16,7 @@ describe('$plugin', function() {
     });
   });
 
-  it('#enable should enable the typaahead', function() {
+  it('#enable should enable the typeahead', function() {
     this.$input.typeahead('disable');
     expect(this.$input.typeahead('isEnabled')).toBe(false);
 
@@ -24,7 +24,7 @@ describe('$plugin', function() {
     expect(this.$input.typeahead('isEnabled')).toBe(true);
   });
 
-  it('#disable should disable the typaahead', function() {
+  it('#disable should disable the typeahead', function() {
     this.$input.typeahead('enable');
     expect(this.$input.typeahead('isEnabled')).toBe(true);
 
@@ -32,7 +32,7 @@ describe('$plugin', function() {
     expect(this.$input.typeahead('isEnabled')).toBe(false);
   });
 
-  it('#activate should activate the typaahead', function() {
+  it('#activate should activate the typeahead', function() {
     this.$input.typeahead('deactivate');
     expect(this.$input.typeahead('isActive')).toBe(false);
 
@@ -40,7 +40,7 @@ describe('$plugin', function() {
     expect(this.$input.typeahead('isActive')).toBe(true);
   });
 
-  it('#activate should fail to activate the typaahead if disabled', function() {
+  it('#activate should fail to activate the typeahead if disabled', function() {
     this.$input.typeahead('deactivate');
     expect(this.$input.typeahead('isActive')).toBe(false);
     this.$input.typeahead('disable');
@@ -49,7 +49,7 @@ describe('$plugin', function() {
     expect(this.$input.typeahead('isActive')).toBe(false);
   });
 
-  it('#deactivate should deactivate the typaahead', function() {
+  it('#deactivate should deactivate the typeahead', function() {
     this.$input.typeahead('activate');
     expect(this.$input.typeahead('isActive')).toBe(true);
 
@@ -157,15 +157,21 @@ describe('$plugin', function() {
     expect(this.$input.typeahead('val')).toBe('foo');
   });
 
+  it('#val(q) should coerce null and undefined to empty string', function() {
+    this.$input.typeahead('val', null);
+    expect(this.$input.typeahead('val')).toBe('');
+
+    this.$input.typeahead('val', undefined);
+    expect(this.$input.typeahead('val')).toBe('');
+  });
+
   it('#destroy should revert modified attributes', function() {
-    expect(this.$input).toHaveAttr('autocomplete', 'off');
     expect(this.$input).toHaveAttr('dir');
     expect(this.$input).toHaveAttr('spellcheck');
     expect(this.$input).toHaveAttr('style');
 
     this.$input.typeahead('destroy');
 
-    expect(this.$input).toHaveAttr('autocomplete', 'on');
     expect(this.$input).not.toHaveAttr('dir');
     expect(this.$input).not.toHaveAttr('spellcheck');
     expect(this.$input).not.toHaveAttr('style');

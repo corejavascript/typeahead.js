@@ -33,7 +33,7 @@
 
       function attach() {
         var $input, $wrapper, $hint, $menu, defaultHint, defaultMenu,
-            eventBus, input, menu, typeahead, MenuConstructor;
+            eventBus, input, menu, status, typeahead, MenuConstructor;
 
         // highlight is a top-level config that needs to get inherited
         // from all of the datasets
@@ -69,17 +69,23 @@
         MenuConstructor = defaultMenu ? DefaultMenu : Menu;
 
         eventBus = new EventBus({ el: $input });
-        input = new Input({ hint: $hint, input: $input, }, www);
+        input = new Input({ hint: $hint, input: $input, menu: $menu }, www);
         menu = new MenuConstructor({
           node: $menu,
           datasets: datasets
         }, www);
+
+        status = new Status({
+          $input: $input,
+          menu: menu
+        });
 
         typeahead = new Typeahead({
           input: input,
           menu: menu,
           eventBus: eventBus,
           minLength: o.minLength,
+          autoselect: o.autoselect,
           keepOpen: o.keepOpen
         }, www);
 
@@ -160,7 +166,7 @@
       return success;
     },
 
-    // mirror jQuery#val functionality: reads opearte on first match,
+    // mirror jQuery#val functionality: reads operate on first match,
     // write operates on all matches
     val: function val(newVal) {
       var query;
@@ -171,7 +177,7 @@
       }
 
       else {
-        ttEach(this, function(t) { t.setVal(newVal); });
+        ttEach(this, function(t) { t.setVal(_.toStr(newVal)); });
         return this;
       }
     },
@@ -187,7 +193,7 @@
   };
 
   $.fn.typeahead = function(method) {
-    // methods that should only act on intialized typeaheads
+    // methods that should only act on initialized typeaheads
     if (methods[method]) {
       return methods[method].apply(this, [].slice.call(arguments, 1));
     }
@@ -219,9 +225,10 @@
     .removeData()
     .css(www.css.hint)
     .css(getBackgroundStyles($input))
-    .prop('readonly', true)
-    .removeAttr('id name placeholder required')
-    .attr({ autocomplete: 'off', spellcheck: 'false', tabindex: -1 });
+    .prop({ readonly: true, required: false })
+    .removeAttr('id name placeholder')
+    .removeClass('required')
+    .attr({ spellcheck: 'false', tabindex: -1 });
   }
 
   function prepInput($input, www) {
@@ -236,7 +243,7 @@
 
     $input
     .addClass(www.classes.input)
-    .attr({ autocomplete: 'off', spellcheck: false });
+    .attr({ spellcheck: false });
 
     // ie7 does not like it when dir is set to auto
     try { !$input.attr('dir') && $input.attr('dir', 'auto'); } catch (e) {}
