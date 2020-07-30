@@ -79,7 +79,8 @@
           input: input,
           menu: menu,
           eventBus: eventBus,
-          minLength: o.minLength
+          minLength: o.minLength,
+          keepOpen: o.keepOpen
         }, www);
 
         $input.data(keys.www, www);
