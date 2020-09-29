@@ -250,7 +250,7 @@ var Input = (function() {
     },
 
     setInputValue: function setInputValue(value) {
-      this.$input.val(value);
+      (value.startsWith('{') && value.endsWith('}')) ? this.$input.val( JSON.parse(value).title ) : this.$input.val(value);
       this.clearHintIfInvalid();
       this._checkLanguageDirection();
     },
