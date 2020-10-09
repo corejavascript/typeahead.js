@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 1.3.1
+ * typeahead.js 1.3.2
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2020 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -159,7 +159,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "1.3.1";
+    var VERSION = "1.3.2";
     var tokenizers = function() {
         "use strict";
         return {
@@ -863,6 +863,12 @@
                 function withoutAsync(query, sync) {
                     return that.search(query, sync);
                 }
+            },
+            __ttAdapterAll: function ttAdapterAll() {
+                var that = this;
+                return function() {
+                    return that.index.all();
+                };
             },
             _loadPrefetch: function loadPrefetch() {
                 var that = this, deferred, serialized;
