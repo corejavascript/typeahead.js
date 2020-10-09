@@ -51,7 +51,7 @@ var Dataset = (function() {
     // use duck typing to see if source is a bloodhound instance by checking
     // for the __ttAdapter property; otherwise assume it is a function
     this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
-    this.sourceAll = o.source.__ttAdapterAll();
+    this.sourceAll = o.source.__ttAdapterAll ? o.source.__ttAdapterAll() : o.source;
 
     // if the async option is undefined, inspect the source signature as
     // a hint to figuring out of the source will return async suggestions

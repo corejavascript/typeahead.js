@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 1.3.1
+ * typeahead.js 1.3.2
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2020 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -734,7 +734,7 @@
             this.displayFn = getDisplayFn(o.display || o.displayKey);
             this.templates = getTemplates(o.templates, this.displayFn);
             this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
-            this.sourceAll = o.source.__ttAdapterAll();
+            this.sourceAll = o.source.__ttAdapterAll ? o.source.__ttAdapterAll() : o.source;
             this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
             this._resetLastSuggestion();
             this.$el = $(o.node).attr("role", "presentation").addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
