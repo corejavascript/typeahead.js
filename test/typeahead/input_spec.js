@@ -32,6 +32,10 @@ describe('Input', function() {
     function noInput() { new Input({}, www); }
   });
 
+  it('should have an aria-controls attribute', function() {
+    expect(this.$input.attr("aria-controls")).toBeDefined();
+  });
+
   describe('when the blur DOM event is triggered', function() {
     it('should reset the input value', function() {
       this.view.setQuery('wine');

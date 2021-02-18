@@ -36,7 +36,7 @@ var Input = (function() {
     this.$input = $(o.input);
     this.$menu = $(o.menu);
 
-    // this id is used for aria-owns
+    // this id is used for aria-owns and aria-controls
     id = this.$input.attr('id') || _.guid();
 
     this.$menu.attr('id', id + '_listbox');
@@ -47,6 +47,7 @@ var Input = (function() {
 
     this.$input.attr({
       'aria-owns': id + '_listbox',
+      'aria-controls': id + '_listbox',
       role: 'combobox',
       'aria-autocomplete': 'list',
       'aria-expanded': false
