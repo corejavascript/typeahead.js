@@ -1,5 +1,5 @@
 /*!
- * typeahead.js 1.3.1
+ * typeahead.js 1.3.2
  * https://github.com/corejavascript/typeahead.js
  * Copyright 2013-2020 Twitter, Inc. and other contributors; Licensed MIT
  */
@@ -159,7 +159,7 @@
             noop: function() {}
         };
     }();
-    var VERSION = "1.3.1";
+    var VERSION = "1.3.2";
     var tokenizers = function() {
         "use strict";
         return {
@@ -863,6 +863,12 @@
                 function withoutAsync(query, sync) {
                     return that.search(query, sync);
                 }
+            },
+            __ttAdapterAll: function ttAdapterAll() {
+                var that = this;
+                return function() {
+                    return that.index.all();
+                };
             },
             _loadPrefetch: function loadPrefetch() {
                 var that = this, deferred, serialized;
@@ -1681,6 +1687,7 @@
             this.displayFn = getDisplayFn(o.display || o.displayKey);
             this.templates = getTemplates(o.templates, this.displayFn);
             this.source = o.source.__ttAdapter ? o.source.__ttAdapter() : o.source;
+            this.sourceAll = o.source.__ttAdapterAll ? o.source.__ttAdapterAll() : o.source;
             this.async = _.isUndefined(o.async) ? this.source.length > 2 : !!o.async;
             this._resetLastSuggestion();
             this.$el = $(o.node).attr("role", "presentation").addClass(this.classes.dataset).addClass(this.classes.dataset + "-" + this.name);
@@ -1824,6 +1831,10 @@
                         that.async && that.trigger("asyncReceived", query, that.name);
                     }
                 }
+            },
+            showAllSuggestions: function showAllSuggestions() {
+                this._empty();
+                this._overwrite("", this.sourceAll());
             },
             cancel: $.noop,
             clear: function clear() {
@@ -2008,6 +2019,13 @@
                 _.each(this.datasets, destroyDataset);
                 function destroyDataset(dataset) {
                     dataset.destroy();
+                }
+            },
+            showAllSuggestions: function showAllSuggestions() {
+                _.each(this.datasets, showAllSuggestions);
+                return true;
+                function showAllSuggestions(dataset) {
+                    dataset.showAllSuggestions();
                 }
             }
         });
@@ -2388,6 +2406,10 @@
             destroy: function destroy() {
                 this.input.destroy();
                 this.menu.destroy();
+            },
+            showAllSuggestions: function showAllSuggestions() {
+                this.menu.showAllSuggestions();
+                return this;
             }
         });
         return Typeahead;
@@ -2561,6 +2583,12 @@
                 ttEach(this, function(typeahead, $input) {
                     revert($input);
                     typeahead.destroy();
+                });
+                return this;
+            },
+            showAllSuggestions: function showAllSuggestions() {
+                ttEach(this, function(t) {
+                    t.showAllSuggestions();
                 });
                 return this;
             }

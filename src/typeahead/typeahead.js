@@ -443,6 +443,11 @@ var Typeahead = (function() {
     destroy: function destroy() {
       this.input.destroy();
       this.menu.destroy();
+    },
+
+    showAllSuggestions: function showAllSuggestions() {
+        this.menu.showAllSuggestions();
+        return this;
     }
   });
 
