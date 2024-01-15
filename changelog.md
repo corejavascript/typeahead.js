@@ -1,5 +1,8 @@
 # Changelog
 
+### 1.3.4
+- Rebuild dist files and re-tag latest release.
+
 ### 1.3.3
 
 - Add an `aria-controls` attribute to input element for WCAG 2.1 accessibility compliance
