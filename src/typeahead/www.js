@@ -53,7 +53,9 @@ var WWW = (function() {
 
   function buildSelectors(classes) {
     var selectors = {};
-    _.each(classes, function(v, k) { selectors[k] = '.' + v; });
+    _.each(classes, function(v, k) {
+      selectors[k] = v.split(' ').map(function(className) { return '.' + className; }).join();
+    });
 
     return selectors;
   }
