@@ -1181,8 +1181,8 @@ describe('Typeahead', function() {
   describe('#setVal', function() {
     it('should update query', function() {
       this.input.hasFocus.andReturn(true);
-      this.view.setVal('woah');
-      expect(this.input.setQuery).toHaveBeenCalledWith('woah');
+      this.view.setVal('woah', true);
+      expect(this.input.setQuery).toHaveBeenCalledWith('woah', true);
     });
   });
 
