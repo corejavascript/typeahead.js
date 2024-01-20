@@ -172,12 +172,12 @@ var Typeahead = (function() {
       if ($selectable = this.menu.getActiveSelectable()) {
         if (this.select($selectable)){
             $e.preventDefault();
-            $e.stopPropagation();
+            $e.stopImmediatePropagation();
         }
       } else if(this.autoselect) {
         if (this.select(this.menu.getTopSelectable())) {
             $e.preventDefault();
-            $e.stopPropagation();
+            $e.stopImmediatePropagation();
         }
       }
     },
