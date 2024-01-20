@@ -321,8 +321,8 @@ var Input = (function() {
       this.$input.off('.tt');
       this.$overflowHelper.remove();
 
-      // #970
-      this.$hint = this.$input = this.$overflowHelper = $('<div>');
+      // #970 #225
+      this.$hint = this.$input = this.$overflowHelper = $('<span>');
     },
     setAriaExpanded: function setAriaExpanded(value) {
       this.$input.attr('aria-expanded', value);
