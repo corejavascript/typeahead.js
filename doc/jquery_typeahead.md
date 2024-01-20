@@ -291,3 +291,58 @@ $('.typeahead').typeahead({
   }
 });
 ```
+
+### Styling
+
+You can use whatever css styling with the library.  Here's an [example snippet](https://stackoverflow.com/questions/60891269/typeahead-js-cant-find-the-styling-to-modify-it-or-can-i-override-an-html-eleme):
+
+```css
+<style>
+    *****************************
+    * Twitter Typeahead Styling *
+    *****************************/
+    .typeahead {
+        width: 100%;
+    }
+
+    .tt-hint {
+        color: #999;
+    }
+
+    .tt-menu {
+        width: 422px;
+        margin-top: 4px;
+        padding: 4px 0;
+        color: black;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+                border-radius: 4px;
+        -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+            -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+                box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    }
+
+    .tt-suggestion {
+        padding: 3px 20px;
+        line-height: 24px;
+    }
+
+    .tt-suggestion:hover {
+        background-color: #ddd;
+    }
+
+    .tt-suggestion p {
+        margin: 0;
+    }
+
+    .tt-suggestion.tt-cursor {
+        color: #fff;
+        background-color: #0097cf;
+    }
+</style>
+```
+
+
