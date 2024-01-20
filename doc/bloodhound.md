@@ -159,6 +159,14 @@ Clears the internal search index that's powered by `local`, `prefetch`, and
 engine.clear();
 ```
 
+#### Bloodhound#clearRemoteCache()
+
+Clears the remote transport cache.
+
+```javascript
+engine.clearRemoteCache();
+```
+
 ### Options
 
 When instantiating a Bloodhound suggestion engine, there are a number of 
@@ -292,6 +300,8 @@ When configuring `remote`, the following options are available.
 
 * `rateLimitWait` – The time interval in milliseconds that will be used by 
   `rateLimitBy`. Defaults to `300`.
+
+* `cache` – Cache remote results. Defaults to `true`.
 
 * `transform` – A function with the signature `transform(response)` that allows
    you to transform the remote response before the Bloodhound instance operates 
