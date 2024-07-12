@@ -141,9 +141,9 @@ var Dataset = (function() {
       $fragment = this._getSuggestionsFragment(query, suggestions);
       this.$lastSuggestion = $fragment.children().last();
 
-      this.$el.html($fragment)
-      .prepend(this._getHeader(query, suggestions))
-      .append(this._getFooter(query, suggestions));
+      let newHtml = $([this._getHeader(query, suggestions),'<div id="__corejs-typeahead-suggestions-placeholder__"></div>',this._getFooter(query, suggestions)].join(''));
+				newHtml.find('#__corejs-typeahead-suggestions-placeholder__').replaceWith($fragment);
+				this.$el.html(newHtml);
     },
 
     _appendSuggestions: function appendSuggestions(query, suggestions) {
